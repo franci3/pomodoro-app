@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
+import 'package:pomodoro_app/screens/statistics_screen.dart';
 import 'package:pomodoro_app/states/home_controller.dart';
 
 class PomodoroHome extends StatelessWidget {
@@ -19,6 +20,8 @@ class PomodoroHome extends StatelessWidget {
       ),
       extendBodyBehindAppBar: true,
       body: ListView(
+        shrinkWrap: true,
+        physics: BouncingScrollPhysics(),
         children: [
           Card(
               margin: EdgeInsets.zero,
@@ -38,10 +41,8 @@ class PomodoroHome extends StatelessWidget {
                             width: 250,
                             height: 250,
                             child: CircularProgressIndicator(
-                                value: 1 -
-                                    (homeController.totalSeconds.value
-                                            .toDouble() /
-                                        1500),
+                                value:
+                                    _calculateCountdownLoader(homeController),
                                 backgroundColor: Colors.white12,
                                 strokeWidth: 18,
                                 valueColor: AlwaysStoppedAnimation<Color>(
@@ -52,9 +53,14 @@ class PomodoroHome extends StatelessWidget {
                   ),
                 ),
               )),
+          StatisticsScreen()
         ],
       ),
     );
+  }
+
+  double _calculateCountdownLoader(HomeController homeController) {
+    return 1 - (homeController.totalSeconds.value / 1500);
   }
 }
 
@@ -63,10 +69,7 @@ Widget _countdownWidget(HomeController homeController) {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            '${homeController.minutes}:${homeController.seconds}',
-            style: PomodoroValues.customTextTheme.headline2,
-          ),
+          homeController.countdownText(),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -74,8 +77,10 @@ Widget _countdownWidget(HomeController homeController) {
                   ? IconButton(
                       iconSize: 40,
                       color: PomodoroValues.mainColor,
-                      onPressed: () => {},
-                      icon: Icon(Icons.pause),
+                      onPressed: () => homeController.pauseTimer(),
+                      icon: Icon(homeController.timerIsPaused.isTrue
+                          ? Icons.play_arrow
+                          : Icons.pause),
                     )
                   : Container(),
               IconButton(
