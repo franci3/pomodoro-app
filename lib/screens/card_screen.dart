@@ -46,32 +46,32 @@ class CardScreen extends StatelessWidget {
 
 Widget _countdownWidget(HomeController homeController) {
   return Obx(() => Column(
-    crossAxisAlignment: CrossAxisAlignment.center,
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      homeController.countdownText(),
-      Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          homeController.timerIsActive.isTrue
-              ? IconButton(
-            iconSize: 40,
-            color: PomodoroValues.mainColor,
-            onPressed: () => homeController.pauseTimer(),
-            icon: Icon(homeController.timerIsPaused.isTrue
-                ? Icons.play_arrow
-                : Icons.pause),
+          homeController.countdownText(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              homeController.timerIsActive.isTrue
+                  ? IconButton(
+                      iconSize: 40,
+                      color: PomodoroValues.mainColor,
+                      onPressed: () => homeController.pauseTimer(),
+                      icon: Icon(homeController.timerIsPaused.isTrue
+                          ? Icons.play_arrow
+                          : Icons.pause),
+                    )
+                  : Container(),
+              IconButton(
+                  iconSize: 40,
+                  color: PomodoroValues.mainColor,
+                  onPressed: () => homeController.startTimer(),
+                  icon: Icon(homeController.timerIsActive.isTrue
+                      ? Icons.stop
+                      : Icons.play_arrow)),
+            ],
           )
-              : Container(),
-          IconButton(
-              iconSize: 40,
-              color: PomodoroValues.mainColor,
-              onPressed: () => homeController.startTimer(),
-              icon: Icon(homeController.timerIsActive.isTrue
-                  ? Icons.stop
-                  : Icons.play_arrow)),
         ],
-      )
-    ],
-  ));
+      ));
 }

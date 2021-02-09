@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
 import 'package:pomodoro_app/screens/card_screen.dart';
 import 'package:pomodoro_app/screens/statistics_screen.dart';
-import 'package:pomodoro_app/states/home_controller.dart';
 
 class PomodoroHome extends StatelessWidget {
   @override
@@ -22,10 +21,7 @@ class PomodoroHome extends StatelessWidget {
       body: ListView(
         shrinkWrap: true,
         physics: BouncingScrollPhysics(),
-        children: [
-          CardScreen(),
-          StatisticsScreen()
-        ],
+        children: [CardScreen(), StatisticsScreen()],
       ),
     );
   }

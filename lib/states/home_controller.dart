@@ -3,11 +3,13 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
+import 'package:pomodoro_app/assets/values/values.dart';
 
 class HomeController extends GetxController {
-  var seconds = 13.obs;
-  var minutes = 1.obs;
-  var totalSeconds = 1500.obs;
+
+  var seconds = focusSeconds.obs;
+  var minutes = focusMinutes.obs;
+  var totalSeconds = totalFocusSeconds.obs;
   var timerIsActive = false.obs;
   var timerIsPaused = false.obs;
   decrementSeconds() => seconds--;
@@ -42,9 +44,9 @@ class HomeController extends GetxController {
   }
 
   resetTimer() {
-    seconds.value = 59;
-    minutes.value = 24;
-    totalSeconds.value = 1500;
+    seconds.value = focusSeconds;
+    minutes.value = focusMinutes;
+    totalSeconds.value = totalFocusSeconds;
   }
 
   pauseTimer() {
