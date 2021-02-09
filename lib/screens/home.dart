@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pomodoro_app/assets/custom_theme.dart';
 import 'package:pomodoro_app/states/home_controller.dart';
 
 class PomodoroHome extends StatelessWidget {
@@ -7,18 +8,85 @@ class PomodoroHome extends StatelessWidget {
   Widget build(BuildContext context) {
     final HomeController homeController = Get.put(HomeController());
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Obx(() => Text('${homeController.minutes}:${homeController.seconds}')),
-            MaterialButton(
-              onPressed: () => homeController.startTimer(),
-              child: Obx(() => Text(homeController.timerIsActive.isTrue ? 'Stop Timer' : 'Start Timer')),
-            )
-          ],
+      appBar: AppBar(
+        backgroundColor: PomodoroValues.cardColor,
+        title: Text(
+          'Pomodoro',
+          style: PomodoroValues.customTextTheme.headline1,
         ),
+        centerTitle: true,
+        shadowColor: Colors.transparent,
+      ),
+      extendBodyBehindAppBar: true,
+      body: ListView(
+        children: [
+          Card(
+              margin: EdgeInsets.zero,
+              color: PomodoroValues.cardColor,
+              elevation: 15,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20))),
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 70.0),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Obx(() => SizedBox(
+                            width: 250,
+                            height: 250,
+                            child: CircularProgressIndicator(
+                                value: 1 -
+                                    (homeController.totalSeconds.value
+                                            .toDouble() /
+                                        1500),
+                                backgroundColor: Colors.white12,
+                                strokeWidth: 18,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    PomodoroValues.mainColor)),
+                          )),
+                      _countdownWidget(homeController)
+                    ],
+                  ),
+                ),
+              )),
+        ],
       ),
     );
   }
+}
+
+Widget _countdownWidget(HomeController homeController) {
+  return Obx(() => Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            '${homeController.minutes}:${homeController.seconds}',
+            style: PomodoroValues.customTextTheme.headline2,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              homeController.timerIsActive.isTrue
+                  ? IconButton(
+                      iconSize: 40,
+                      color: PomodoroValues.mainColor,
+                      onPressed: () => {},
+                      icon: Icon(Icons.pause),
+                    )
+                  : Container(),
+              IconButton(
+                  iconSize: 40,
+                  color: PomodoroValues.mainColor,
+                  onPressed: () => homeController.startTimer(),
+                  icon: Icon(homeController.timerIsActive.isTrue
+                      ? Icons.stop
+                      : Icons.play_arrow)),
+            ],
+          )
+        ],
+      ));
 }

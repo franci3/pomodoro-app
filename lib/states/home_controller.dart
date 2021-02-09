@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 class HomeController extends GetxController {
   var seconds = 59.obs;
   var minutes = 24.obs;
+  var totalSeconds = 1500.obs;
   var timerIsActive = false.obs;
   decrementSeconds() => seconds--;
   decrementMinutes() => minutes--;
@@ -22,14 +23,11 @@ class HomeController extends GetxController {
   }
 
   startStopTimer() {
-    if (timerIsActive.isfalse) {
-      timerIsActive.value = true;
-    }else{
-      timerIsActive.value = false;
-    }
+    timerIsActive.toggle();
   }
 
   handleTimerCountdown() {
+    totalSeconds--;
     if(seconds.value != 0){
       decrementSeconds();
     }else if(seconds.value == 0 && minutes.value != 0){
@@ -43,5 +41,6 @@ class HomeController extends GetxController {
   resetTimer() {
     seconds.value = 59;
     minutes.value = 24;
+    totalSeconds.value = 1500;
   }
 }
