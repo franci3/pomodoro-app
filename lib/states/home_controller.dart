@@ -78,6 +78,8 @@ class HomeController extends GetxController {
     totalSeconds.value = totalFocusSeconds;
     roundCount.value = 0;
     animationSeconds.value = totalFocusSeconds;
+    if(focusPauseRound.isTrue) focusPauseRound.toggle();
+    if(timerIsPaused.isTrue) timerIsPaused.toggle();
   }
 
   _playSound() async {
