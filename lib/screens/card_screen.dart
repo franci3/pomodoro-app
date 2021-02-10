@@ -20,38 +20,59 @@ class CardScreen extends StatelessWidget {
               bottomRight: Radius.circular(45))),
       child: Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 60.0),
-          child: Stack(
-            alignment: Alignment.center,
+          padding: const EdgeInsets.only(top: 30.0, bottom: 100),
+          child: Column(
             children: [
-              CustomPaint(
-                size: Size(200, 100),
-                painter: CirclesPainter(),
-              ),
-              Obx(
-                () => Container(
-                  width: 250,
-                  height: 250,
-                  decoration: new BoxDecoration(
-                    backgroundBlendMode: BlendMode.lighten,
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        const Color(0x66ffffff),
-                        const Color(0x1Affffff),
-                      ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Obx(
+                    () => Text(
+                      homeController.focusPauseRound.isTrue
+                          ? 'BREAK'
+                          : 'SESSION',
+                      style: PomodoroValues.customTextTheme.subtitle2,
                     ),
-                    borderRadius: new BorderRadius.circular(125),
                   ),
-                  child: CircularProgressIndicator(
-                      value: _calculateCountdownLoader(homeController),
-                      strokeWidth: 18,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                          PomodoroValues.mainColor)),
-                ),
+                ],
               ),
-              _countdownWidget(homeController)
+              Padding(padding: EdgeInsets.symmetric(vertical: 15)),
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  CustomPaint(
+                    size: Size(200, 100),
+                    painter: CirclesPainter(),
+                  ),
+                  Obx(
+                    () => Container(
+                      width: 250,
+                      height: 250,
+                      decoration: new BoxDecoration(
+                        backgroundBlendMode: BlendMode.lighten,
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            PomodoroValues.gradientColorOne,
+                            PomodoroValues.gradientColorTwo
+                          ],
+                        ),
+                        borderRadius: new BorderRadius.circular(125),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CircularProgressIndicator(
+                            value: _calculateCountdownLoader(homeController),
+                            strokeWidth: 16,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                PomodoroValues.yellowColorTwo)),
+                      ),
+                    ),
+                  ),
+                  _countdownWidget(homeController)
+                ],
+              ),
             ],
           ),
         ),
@@ -78,7 +99,7 @@ Widget _countdownWidget(HomeController homeController) {
               homeController.timerIsActive.isTrue
                   ? IconButton(
                       iconSize: 40,
-                      color: PomodoroValues.mainColor,
+                      color: PomodoroValues.yellowColorOne,
                       onPressed: () => homeController.pauseTimer(),
                       icon: Icon(homeController.timerIsPaused.isTrue
                           ? Icons.play_arrow
@@ -87,7 +108,7 @@ Widget _countdownWidget(HomeController homeController) {
                   : Container(),
               IconButton(
                   iconSize: 40,
-                  color: PomodoroValues.mainColor,
+                  color: PomodoroValues.yellowColorOne,
                   onPressed: () => homeController.startTimer(),
                   icon: Icon(homeController.timerIsActive.isTrue
                       ? Icons.stop
