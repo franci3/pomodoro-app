@@ -19,7 +19,7 @@ class PomodoroValues {
     subtitle1: TextStyle(fontSize:26, color: mainColor),
     subtitle2: TextStyle(fontSize:20, color: mainColor, fontWeight: FontWeight.w200),
     bodyText1: TextStyle(fontSize: 16, color: mainColor),
-    bodyText2: TextStyle(fontSize: 14, color: mainColor),
+    bodyText2: TextStyle(fontSize: 18, color: mainColor, fontWeight: FontWeight.w300, ),
     button: TextStyle(fontSize: 14, color: mainColor),
     caption: TextStyle(fontSize: 14, color: mainColor),
   );
