@@ -1,5 +1,7 @@
 class PomodoroTimerValues {
 
+  static const appTitle = 'Pomodoro Timer';
+
   static const focusMinutes = 25;
   static const totalFocusSeconds = focusMinutes * 60;
 
