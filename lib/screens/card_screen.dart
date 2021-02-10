@@ -21,16 +21,18 @@ class CardScreen extends StatelessWidget {
           child: Stack(
             alignment: Alignment.center,
             children: [
-              Obx(() => SizedBox(
-                    width: 250,
-                    height: 250,
-                    child: CircularProgressIndicator(
-                        value: _calculateCountdownLoader(homeController),
-                        backgroundColor: Colors.white12,
-                        strokeWidth: 18,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                            PomodoroValues.mainColor)),
-                  )),
+              Obx(
+                () => SizedBox(
+                  width: 250,
+                  height: 250,
+                  child: CircularProgressIndicator(
+                      value: _calculateCountdownLoader(homeController),
+                      backgroundColor: Colors.white12,
+                      strokeWidth: 18,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                          PomodoroValues.mainColor)),
+                ),
+              ),
               _countdownWidget(homeController)
             ],
           ),
@@ -40,8 +42,9 @@ class CardScreen extends StatelessWidget {
   }
 
   double _calculateCountdownLoader(HomeController homeController) {
-    //TODO: FIX Total Seconds
-    return 1 - (homeController.totalSeconds.value / 1500);
+    return 1 -
+        (homeController.totalSeconds.value /
+            homeController.animationSeconds.value);
   }
 }
 

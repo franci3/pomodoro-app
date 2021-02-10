@@ -10,6 +10,7 @@ class HomeController extends GetxController {
   var seconds = focusSeconds.obs;
   var minutes = focusMinutes.obs;
   var totalSeconds = totalFocusSeconds.obs;
+  var animationSeconds = totalFocusSeconds.obs;
   var roundCount = 0.obs;
   var fullRoundCount = 0.obs;
   var timerIsActive = false.obs;
@@ -47,8 +48,10 @@ class HomeController extends GetxController {
       decrementMinutes();
     } else if (seconds.value == 0 && minutes.value == 0) {
       focusPauseRound.toggle();
+      //TODO: Remove fixed values with const
       if(focusPauseRound.isTrue){
         incrementRound();
+        animationSeconds.value = totalPauseSeconds;
         //minutes.value = pauseMinutes;
         if(roundCount.value == 4){
           roundCount.value = 0;
@@ -70,6 +73,7 @@ class HomeController extends GetxController {
     minutes.value = focusMinutes;
     totalSeconds.value = totalFocusSeconds;
     roundCount.value = 0;
+    animationSeconds.value = totalFocusSeconds;
   }
 
   pauseTimer() {
