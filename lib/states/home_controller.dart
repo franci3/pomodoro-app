@@ -8,10 +8,10 @@ import 'package:audioplayers/audio_cache.dart';
 
 class HomeController extends GetxController {
 
-  var seconds = focusSeconds.obs;
-  var minutes = focusMinutes.obs;
-  var totalSeconds = totalFocusSeconds.obs;
-  var animationSeconds = totalFocusSeconds.obs;
+  var seconds = 0.obs;
+  var minutes = PomodoroTimerValues.focusMinutes.obs;
+  var totalSeconds = PomodoroTimerValues.totalFocusSeconds.obs;
+  var animationSeconds = PomodoroTimerValues.totalFocusSeconds.obs;
   var roundCount = 0.obs;
   var fullRoundCount = 0.obs;
   var timerIsActive = false.obs;
@@ -51,20 +51,19 @@ class HomeController extends GetxController {
       seconds.value = 59;
       _decrementMinutes();
     } else if (seconds.value == 0 && minutes.value == 0) {
+      _playSound();
       focusPauseRound.toggle();
-      //TODO: Remove fixed values with const
       if(focusPauseRound.isTrue){
         _incrementRound();
-        animationSeconds.value = totalPauseSeconds;
-        //minutes.value = pauseMinutes;
+        animationSeconds.value = PomodoroTimerValues.totalPauseSeconds;
         if(roundCount.value == 4){
           roundCount.value = 0;
           _incrementFullRoundCount();
-          seconds.value = 15;
-          totalSeconds.value = 15;
+          minutes.value = PomodoroTimerValues.longPauseMinutes;
+          totalSeconds.value = PomodoroTimerValues.totalLongPauseSeconds;
         } else {
-          seconds.value = 5;
-          totalSeconds.value = totalPauseSeconds;
+          minutes.value = PomodoroTimerValues.pauseMinutes;
+          totalSeconds.value = PomodoroTimerValues.totalPauseSeconds;
         }
       } else {
         _resetTimer();
@@ -73,11 +72,11 @@ class HomeController extends GetxController {
   }
 
   _resetTimer() {
-    seconds.value = focusSeconds;
-    minutes.value = focusMinutes;
-    totalSeconds.value = totalFocusSeconds;
+    seconds.value = 0;
+    minutes.value = PomodoroTimerValues.focusMinutes;
+    totalSeconds.value = PomodoroTimerValues.totalFocusSeconds;
     roundCount.value = 0;
-    animationSeconds.value = totalFocusSeconds;
+    animationSeconds.value = PomodoroTimerValues.totalFocusSeconds;
     if(focusPauseRound.isTrue) focusPauseRound.toggle();
     if(timerIsPaused.isTrue) timerIsPaused.toggle();
   }
