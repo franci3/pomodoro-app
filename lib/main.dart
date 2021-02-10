@@ -7,6 +7,7 @@ import 'package:pomodoro_app/screens/home.dart';
 import 'package:pomodoro_app/states/statistics_controller.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   Paint.enableDithering = true;
   await GetStorage.init();
