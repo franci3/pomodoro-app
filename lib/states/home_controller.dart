@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
 import 'package:pomodoro_app/assets/values/values.dart';
 import 'package:audioplayers/audio_cache.dart';
+import 'package:pomodoro_app/states/statistics_controller.dart';
 
 class HomeController extends GetxController {
 
@@ -19,11 +21,13 @@ class HomeController extends GetxController {
   var focusPauseRound = false.obs;
 
   AudioCache audioPlayer = AudioCache(prefix: 'lib/assets/sounds/');
+  final StatisticsController _statisticsController = Get.find();
 
   _decrementSeconds() => seconds--;
   _decrementMinutes() => minutes--;
   _decrementTotalSeconds() => totalSeconds--;
   _incrementRound() => roundCount++;
+  _writeToStorageController() => _statisticsController.writeTotalFocusMinutes(25);
   _incrementFullRoundCount() => fullRoundCount++;
 
   startTimer() {
@@ -31,7 +35,7 @@ class HomeController extends GetxController {
     Timer.periodic(Duration(seconds: 1), (timer) {
       if (timerIsActive.isTrue && timerIsPaused.isfalse) {
         _handleTimerCountdown();
-      } else if(timerIsActive.isfalse){
+      } else if (timerIsActive.isfalse) {
         timer.cancel();
         _resetTimer();
       }
@@ -53,10 +57,11 @@ class HomeController extends GetxController {
     } else if (seconds.value == 0 && minutes.value == 0) {
       _playSound();
       focusPauseRound.toggle();
-      if(focusPauseRound.isTrue){
+      if (focusPauseRound.isTrue) {
         _incrementRound();
+        _writeToStorageController();
         animationSeconds.value = PomodoroTimerValues.totalPauseSeconds;
-        if(roundCount.value == 4){
+        if (roundCount.value == 4) {
           roundCount.value = 0;
           _incrementFullRoundCount();
           minutes.value = PomodoroTimerValues.longPauseMinutes;
@@ -77,8 +82,8 @@ class HomeController extends GetxController {
     totalSeconds.value = PomodoroTimerValues.totalFocusSeconds;
     roundCount.value = 0;
     animationSeconds.value = PomodoroTimerValues.totalFocusSeconds;
-    if(focusPauseRound.isTrue) focusPauseRound.toggle();
-    if(timerIsPaused.isTrue) timerIsPaused.toggle();
+    if (focusPauseRound.isTrue) focusPauseRound.toggle();
+    if (timerIsPaused.isTrue) timerIsPaused.toggle();
   }
 
   _playSound() async {

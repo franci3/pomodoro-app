@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
 import 'package:pomodoro_app/assets/values/values.dart';
+import 'package:pomodoro_app/states/statistics_controller.dart';
 import 'package:pomodoro_app/widgets/license_screen.dart';
 
 class LegalScreen extends StatelessWidget {
+  final StatisticsController statisticsController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,14 +33,13 @@ class LegalScreen extends StatelessWidget {
       body: ListView(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 50.0)
-                .add(EdgeInsets.only(top: 100)),
+            padding: const EdgeInsets.symmetric(horizontal: 50.0),
             child: MaterialButton(
-              onPressed: () {},
+              onPressed: () => statisticsController.resetTotalFocusTime(),
               color: PomodoroValues.redColor,
               elevation: 15,
               child: Text(
-                'Statistiken zurücksetzen',
+                'Fokuszeit zurücksetzen',
                 style: PomodoroValues.customTextTheme.subtitle2,
               ),
             ),
