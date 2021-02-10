@@ -17,7 +17,7 @@ class CardScreen extends StatelessWidget {
               bottomRight: Radius.circular(20))),
       child: Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 70.0),
+          padding: const EdgeInsets.symmetric(vertical: 60.0),
           child: Stack(
             alignment: Alignment.center,
             children: [
@@ -40,6 +40,7 @@ class CardScreen extends StatelessWidget {
   }
 
   double _calculateCountdownLoader(HomeController homeController) {
+    //TODO: FIX Total Seconds
     return 1 - (homeController.totalSeconds.value / 1500);
   }
 }
