@@ -25,6 +25,7 @@ class StatisticsScreen extends StatelessWidget {
           Obx(
             () => Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 StatsCircle(
                   innerCircleText: homeController.roundCount.toString(),
