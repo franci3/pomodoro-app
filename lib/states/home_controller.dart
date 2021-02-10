@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
 import 'package:pomodoro_app/assets/values/values.dart';
+import 'package:audioplayers/audio_cache.dart';
 
 class HomeController extends GetxController {
 
@@ -17,45 +18,48 @@ class HomeController extends GetxController {
   var timerIsPaused = false.obs;
   var focusPauseRound = false.obs;
 
-  decrementSeconds() => seconds--;
-  decrementMinutes() => minutes--;
-  decrementTotalSeconds() => totalSeconds--;
-  incrementRound() => roundCount++;
-  incrementFullRoundCount() => fullRoundCount++;
+  AudioCache audioPlayer = AudioCache(prefix: 'lib/assets/sounds/');
+
+  _decrementSeconds() => seconds--;
+  _decrementMinutes() => minutes--;
+  _decrementTotalSeconds() => totalSeconds--;
+  _incrementRound() => roundCount++;
+  _incrementFullRoundCount() => fullRoundCount++;
 
   startTimer() {
-    startStopTimer();
+    _startStopTimer();
     Timer.periodic(Duration(seconds: 1), (timer) {
       if (timerIsActive.isTrue && timerIsPaused.isfalse) {
-        handleTimerCountdown();
+        _handleTimerCountdown();
       } else if(timerIsActive.isfalse){
         timer.cancel();
-        resetTimer();
+        _resetTimer();
       }
     });
   }
 
-  startStopTimer() {
+  _startStopTimer() {
     timerIsActive.toggle();
+    _playSound();
   }
 
-  handleTimerCountdown() {
-    decrementTotalSeconds();
+  _handleTimerCountdown() {
+    _decrementTotalSeconds();
     if (seconds.value != 0) {
-      decrementSeconds();
+      _decrementSeconds();
     } else if (seconds.value == 0 && minutes.value != 0) {
       seconds.value = 59;
-      decrementMinutes();
+      _decrementMinutes();
     } else if (seconds.value == 0 && minutes.value == 0) {
       focusPauseRound.toggle();
       //TODO: Remove fixed values with const
       if(focusPauseRound.isTrue){
-        incrementRound();
+        _incrementRound();
         animationSeconds.value = totalPauseSeconds;
         //minutes.value = pauseMinutes;
         if(roundCount.value == 4){
           roundCount.value = 0;
-          incrementFullRoundCount();
+          _incrementFullRoundCount();
           seconds.value = 15;
           totalSeconds.value = 15;
         } else {
@@ -63,17 +67,21 @@ class HomeController extends GetxController {
           totalSeconds.value = totalPauseSeconds;
         }
       } else {
-        resetTimer();
+        _resetTimer();
       }
     }
   }
 
-  resetTimer() {
+  _resetTimer() {
     seconds.value = focusSeconds;
     minutes.value = focusMinutes;
     totalSeconds.value = totalFocusSeconds;
     roundCount.value = 0;
     animationSeconds.value = totalFocusSeconds;
+  }
+
+  _playSound() async {
+    audioPlayer.play('484344__inspectorj__bike-bell-ding-single-01-01.mp3');
   }
 
   pauseTimer() {

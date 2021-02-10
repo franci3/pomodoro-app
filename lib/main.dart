@@ -4,6 +4,7 @@ import 'package:pomodoro_app/assets/custom_theme.dart';
 import 'package:pomodoro_app/screens/home.dart';
 
 void main() {
+  Paint.enableDithering = true;
   runApp(GetMaterialApp(
       title: 'Pomodoro App',
       debugShowCheckedModeBanner: false,

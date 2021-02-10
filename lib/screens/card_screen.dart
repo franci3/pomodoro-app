@@ -1,7 +1,10 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
 import 'package:pomodoro_app/states/home_controller.dart';
+import 'package:pomodoro_app/widgets/circles_painter_widget.dart';
 
 class CardScreen extends StatelessWidget {
   final HomeController homeController = Get.put(HomeController());
@@ -13,21 +16,36 @@ class CardScreen extends StatelessWidget {
       elevation: 15,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(20),
-              bottomRight: Radius.circular(20))),
+              bottomLeft: Radius.circular(45),
+              bottomRight: Radius.circular(45))),
       child: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 60.0),
           child: Stack(
             alignment: Alignment.center,
             children: [
+              CustomPaint(
+                size: Size(200, 100),
+                painter: CirclesPainter(),
+              ),
               Obx(
-                () => SizedBox(
+                () => Container(
                   width: 250,
                   height: 250,
+                  decoration: new BoxDecoration(
+                    backgroundBlendMode: BlendMode.lighten,
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        const Color(0x66ffffff),
+                        const Color(0x1Affffff),
+                      ],
+                    ),
+                    borderRadius: new BorderRadius.circular(125),
+                  ),
                   child: CircularProgressIndicator(
                       value: _calculateCountdownLoader(homeController),
-                      backgroundColor: Colors.white12,
                       strokeWidth: 18,
                       valueColor: AlwaysStoppedAnimation<Color>(
                           PomodoroValues.mainColor)),
