@@ -6,11 +6,11 @@ import 'package:pomodoro_app/assets/values/values.dart';
 
 class StatisticsController extends GetxController {
   final _statisticsBox = GetStorage();
-  var totalFocusMinutes = 0.obs;
+  var totalFocusMinutes = 3.obs;
 
   @override
   void onInit() {
-    _statisticsBox.writeIfNull('totalFocusMinutes', totalFocusMinutes);
+    _statisticsBox.writeIfNull('totalFocusMinutes', totalFocusMinutes.value);
     _getTotalFocusMinutes();
     super.onInit();
   }
