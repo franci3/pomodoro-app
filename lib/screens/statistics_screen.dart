@@ -48,7 +48,7 @@ class StatisticsScreen extends StatelessWidget {
               ],
             ),
           ),
-          Row(
+          /*Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(
@@ -71,7 +71,7 @@ class StatisticsScreen extends StatelessWidget {
                 ),
               ),
             ],
-          )
+          )*/
         ],
       ),
     );
