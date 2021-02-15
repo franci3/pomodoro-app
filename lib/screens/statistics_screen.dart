@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pomodoro_app/assets/custom_theme.dart';
-import 'package:pomodoro_app/screens/detail_statistics_screen.dart';
 import 'package:pomodoro_app/states/home_controller.dart';
 import 'package:pomodoro_app/states/statistics_controller.dart';
 import 'package:pomodoro_app/widgets/stats_circle.dart';
