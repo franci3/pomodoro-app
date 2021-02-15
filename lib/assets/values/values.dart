@@ -13,9 +13,9 @@ class PomodoroTimerValues {
 
   static const legalGreetingsParagraph = 'Vielen Dank dafür, dass du den '
       'Pomodoro Timer heruntergeladen hast!\n'
-      'Damit unterstützt du die Weiterentwicklung wirklich sehr. Falls du '
-      'noch mehr Feedback geben möchtest, kannst du mich über gianfranco.vela@hsrw.org '
-      'erreichen. \n Vielen Dank an Vicky für das tolle Design! \n'
-      'Jetzt folgen die langweiligen Lizenz-Texte...';
+      'Damit unterstützt du die Weiterentwicklung wirklich sehr.\n'
+      'Vielen Dank an Vicky für das tolle Design!\n'
+      'Sound: "Bike, Bell Ding, Single, 01-01.wav" by InspectorJ (www.jshaw.co.uk) of Freesound.org\n'
+      'Jetzt folgen die Lizenz-Texte...';
 
 }
