@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pomodoro_app/assets/custom_theme.dart';
+import 'package:pomodoro_app/screens/detail_statistics_screen.dart';
 import 'package:pomodoro_app/states/home_controller.dart';
 import 'package:pomodoro_app/states/statistics_controller.dart';
 import 'package:pomodoro_app/widgets/stats_circle.dart';
@@ -38,13 +40,38 @@ class StatisticsScreen extends StatelessWidget {
                   circleDescription: 'Pomodoro Runden',
                 ),
                 StatsCircle(
-                  innerCircleText: statisticsController.totalFocusMinutes.toString(),
+                  innerCircleText:
+                      statisticsController.totalFocusMinutes.toString(),
                   circleValue: 1,
                   circleDescription: 'Fokuszeit insgesamt',
                 )
               ],
             ),
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 26.0, top: 20),
+                child: FlatButton(
+                  onPressed: () {
+                    Get.to(DetailedStatisticsScreen(),
+                        transition: Transition.cupertino
+                    );
+                  },
+                  splashColor: Colors.transparent,
+                  child: Text(
+                    'MORE',
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: PomodoroValues.mainColor,
+                        fontWeight: FontWeight.w400),
+                  ),
+                  color: PomodoroValues.yellowColorOne,
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );
