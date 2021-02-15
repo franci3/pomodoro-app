@@ -38,7 +38,6 @@ class StatisticsScreen extends StatelessWidget {
                   circleDescription: 'Pomodoro Runden',
                 ),
                 StatsCircle(
-                  //TODO Listen to Data changes in Statistics Controller with listen
                   innerCircleText: statisticsController.totalFocusMinutes.toString(),
                   circleValue: 1,
                   circleDescription: 'Fokuszeit insgesamt',
