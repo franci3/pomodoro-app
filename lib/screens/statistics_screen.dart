@@ -38,14 +38,38 @@ class StatisticsScreen extends StatelessWidget {
                   circleDescription: 'Pomodoro Runden',
                 ),
                 StatsCircle(
-                  //TODO Listen to Data changes in Statistics Controller with listen
-                  innerCircleText: statisticsController.totalFocusMinutes.toString(),
+                  innerCircleText:
+                      statisticsController.totalFocusMinutes.toString(),
                   circleValue: 1,
                   circleDescription: 'Fokuszeit insgesamt',
                 )
               ],
             ),
           ),
+          /*Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 26.0, top: 20),
+                child: FlatButton(
+                  onPressed: () {
+                    Get.to(DetailedStatisticsScreen(),
+                        transition: Transition.cupertino
+                    );
+                  },
+                  splashColor: Colors.transparent,
+                  child: Text(
+                    'MORE',
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: PomodoroValues.mainColor,
+                        fontWeight: FontWeight.w400),
+                  ),
+                  color: PomodoroValues.yellowColorOne,
+                ),
+              ),
+            ],
+          )*/
         ],
       ),
     );
