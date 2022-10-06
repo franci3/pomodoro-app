@@ -10,6 +10,6 @@ pause every round. After 4 rounds there is a longer 15 minutes pause.
 ## Motivation
 
 Die App dient zum einen als Lernhilfe für den Nutzer, zum anderen als eine Spielwiese für mich, dass
-neue StateManagement Framework GetX für Flutter auszuprobieren. Bisher liebe ich es.
+neue StateManagement Framework GetX für Flutter auszuprobieren. Update: ich liebe es nicht mehr.
 
     
