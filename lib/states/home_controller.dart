@@ -32,9 +32,9 @@ class HomeController extends GetxController {
   startTimer() {
     _startStopTimer();
     Timer.periodic(Duration(seconds: 1), (timer) {
-      if (timerIsActive.isTrue && timerIsPaused.isfalse) {
+      if (timerIsActive.isTrue && timerIsPaused.isFalse) {
         _handleTimerCountdown();
-      } else if (timerIsActive.isfalse) {
+      } else if (timerIsActive.isFalse) {
         timer.cancel();
         _resetTimer();
       }
