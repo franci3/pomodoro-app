@@ -4,6 +4,7 @@ import 'package:pomodoro_app/assets/values/values.dart';
 import 'package:pomodoro_app/widgets/license_screen.dart';
 
 class LegalScreen extends StatelessWidget {
+  const LegalScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,14 +17,6 @@ class LegalScreen extends StatelessWidget {
         ),
         centerTitle: true,
         shadowColor: Colors.transparent,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: PomodoroValues.mainColor,
-            size: 26,
-          ),
-          onPressed: () {},
-        ),
       ),
       extendBodyBehindAppBar: true,
       backgroundColor: PomodoroValues.cardColor,
@@ -50,10 +43,10 @@ class LegalScreen extends StatelessWidget {
               )),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: const [
               Text('MADE WITH'),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: EdgeInsets.symmetric(horizontal: 8.0),
                 child: Icon(
                   Icons.favorite_rounded,
                   size: 24,
@@ -69,7 +62,7 @@ class LegalScreen extends StatelessWidget {
               color: PomodoroValues.mainColor,
             ),
           ),
-          LicenseScreen()
+          const LicenseScreen()
         ],
       ),
     );

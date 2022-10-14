@@ -28,6 +28,7 @@ class PomodoroValues {
     fontFamily: 'Roboto',
     textTheme: customTextTheme,
     backgroundColor: mainColor,
-    visualDensity: VisualDensity.adaptivePlatformDensity
+    visualDensity: VisualDensity.adaptivePlatformDensity,
+    splashFactory: NoSplash.splashFactory,
   );
 }

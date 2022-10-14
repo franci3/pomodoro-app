@@ -3,6 +3,7 @@ import 'package:pomodoro_app/assets/custom_theme.dart';
 import 'package:pomodoro_app/assets/values/values.dart';
 import 'package:pomodoro_app/screens/home/statistics.dart';
 import 'package:pomodoro_app/screens/home/timer_card.dart';
+import 'package:pomodoro_app/screens/legal/legal_screen.dart';
 
 class PomodoroHome extends StatelessWidget {
   @override
@@ -21,7 +22,9 @@ class PomodoroHome extends StatelessWidget {
             padding: const EdgeInsets.only(top: 8.0, right: 10),
             child: IconButton(
               icon: Icon(Icons.info, color: PomodoroValues.mainColor, size: 26),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const LegalScreen()));
+              },
             ),
           )
         ],

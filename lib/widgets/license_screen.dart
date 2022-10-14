@@ -31,7 +31,8 @@ class _LicenseScreenState extends State<LicenseScreen> {
         debugLabel: 'License',
       );
       if (_licenseContent.containsKey(license.packages.join(', '))) {
-        tempSubWidget = _licenseContent[license.packages.join(', ')] as List<Widget>;
+        tempSubWidget =
+            _licenseContent[license.packages.join(', ')];
       }
       for (LicenseParagraph paragraph in paragraphs) {
         if (paragraph.indent == LicenseParagraph.centeredIndent) {
@@ -51,23 +52,25 @@ class _LicenseScreenState extends State<LicenseScreen> {
           ));
         }
       }
-      tempSubWidget.add(Divider());
+      tempSubWidget.add(const Divider());
       _licenseContent[license.packages.join(', ')] = tempSubWidget;
     }
 
     _licenseContent.forEach((String key, List<Widget> value) {
       int count = 0;
-      value.forEach((Widget element) {
+      for (final Widget element in value) {
         if (element.runtimeType == Divider) {
           count += 1;
         }
-      });
+      }
       _licenses.add(ExpansionTile(
-        title: Text(key, style: PomodoroValues.customTextTheme.bodyText1,),
+        title: Text(
+          key,
+          style: PomodoroValues.customTextTheme.bodyText1,
+        ),
         subtitle: Text(
           '$count Lizenzen',
         ),
-
         children: <Widget>[...value],
       ));
     });
@@ -81,12 +84,15 @@ class _LicenseScreenState extends State<LicenseScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: !_loaded
-          ? Center(child: CircularProgressIndicator())
+          ? Center(
+              child: CircularProgressIndicator(
+              color: PomodoroValues.mainColor,
+            ))
           : ListView.separated(
               shrinkWrap: true,
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               itemCount: _licenses.length,
-              separatorBuilder: (BuildContext context, int index) => Divider(),
+              separatorBuilder: (BuildContext context, int index) => const Divider(),
               itemBuilder: (BuildContext context, int index) {
                 return _licenses.elementAt(index);
               },
