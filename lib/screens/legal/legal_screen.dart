@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
 import 'package:pomodoro_app/assets/values/values.dart';
-import 'package:pomodoro_app/states/statistics_controller.dart';
 import 'package:pomodoro_app/widgets/license_screen.dart';
 
 class LegalScreen extends StatelessWidget {
-  final StatisticsController statisticsController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +22,7 @@ class LegalScreen extends StatelessWidget {
             color: PomodoroValues.mainColor,
             size: 26,
           ),
-          onPressed: () => Get.back(),
+          onPressed: () {},
         ),
       ),
       extendBodyBehindAppBar: true,
@@ -35,7 +32,8 @@ class LegalScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 50.0),
             child: MaterialButton(
-              onPressed: () => statisticsController.resetTotalFocusTime(),
+              onPressed: () {},
+              //onPressed: () => statisticsController.resetTotalFocusTime(),
               color: PomodoroValues.redColor,
               elevation: 15,
               child: Text(

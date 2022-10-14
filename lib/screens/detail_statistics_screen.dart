@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
 import 'package:pomodoro_app/assets/values/values.dart';
 
@@ -21,7 +20,7 @@ class DetailedStatisticsScreen extends StatelessWidget {
             color: PomodoroValues.mainColor,
             size: 26,
           ),
-          onPressed: () => Get.back(),
+          onPressed: () {},
         ),
       ),
       extendBodyBehindAppBar: true,

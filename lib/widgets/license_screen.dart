@@ -1,17 +1,18 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
 
 class LicenseScreen extends StatefulWidget {
+  const LicenseScreen({Key key}) : super(key: key);
+
   @override
   _LicenseScreenState createState() => _LicenseScreenState();
 }
 
 class _LicenseScreenState extends State<LicenseScreen> {
   final List<Widget> _licenses = <Widget>[];
-  final Map<String, List> _licenseContent = {};
+  final Map<String, List<Widget>> _licenseContent = {};
   bool _loaded = false;
 
   @override
@@ -30,7 +31,7 @@ class _LicenseScreenState extends State<LicenseScreen> {
         debugLabel: 'License',
       );
       if (_licenseContent.containsKey(license.packages.join(', '))) {
-        tempSubWidget = _licenseContent[license.packages.join(', ')];
+        tempSubWidget = _licenseContent[license.packages.join(', ')] as List<Widget>;
       }
       for (LicenseParagraph paragraph in paragraphs) {
         if (paragraph.indent == LicenseParagraph.centeredIndent) {
@@ -54,13 +55,15 @@ class _LicenseScreenState extends State<LicenseScreen> {
       _licenseContent[license.packages.join(', ')] = tempSubWidget;
     }
 
-    _licenseContent.forEach((key, value) {
+    _licenseContent.forEach((String key, List<Widget> value) {
       int count = 0;
-      value.forEach((element) {
-        if (element.runtimeType == Divider) count += 1;
+      value.forEach((Widget element) {
+        if (element.runtimeType == Divider) {
+          count += 1;
+        }
       });
       _licenses.add(ExpansionTile(
-        title: Text('$key', style: PomodoroValues.customTextTheme.bodyText1,),
+        title: Text(key, style: PomodoroValues.customTextTheme.bodyText1,),
         subtitle: Text(
           '$count Lizenzen',
         ),
@@ -83,8 +86,8 @@ class _LicenseScreenState extends State<LicenseScreen> {
               shrinkWrap: true,
               physics: BouncingScrollPhysics(),
               itemCount: _licenses.length,
-              separatorBuilder: (context, index) => Divider(),
-              itemBuilder: (context, index) {
+              separatorBuilder: (BuildContext context, int index) => Divider(),
+              itemBuilder: (BuildContext context, int index) {
                 return _licenses.elementAt(index);
               },
             ),
