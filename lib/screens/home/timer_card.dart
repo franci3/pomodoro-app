@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
@@ -6,8 +5,8 @@ import 'package:pomodoro_app/controller/timer_controller.dart';
 import 'package:pomodoro_app/widgets/circles_painter_widget.dart';
 import 'package:provider/provider.dart';
 
-class CardScreen extends StatelessWidget {
-  const CardScreen({Key key}) : super(key: key);
+class TimerCard extends StatelessWidget {
+  const TimerCard({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

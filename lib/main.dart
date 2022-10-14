@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
 import 'package:pomodoro_app/controller/timer_controller.dart';
-import 'package:pomodoro_app/screens/home.dart';
+import 'package:pomodoro_app/screens/home/home_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() async {

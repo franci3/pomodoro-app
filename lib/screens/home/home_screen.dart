@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
 import 'package:pomodoro_app/assets/values/values.dart';
-import 'package:pomodoro_app/screens/card_screen.dart';
-import 'package:pomodoro_app/screens/statistics_screen.dart';
+import 'package:pomodoro_app/screens/home/statistics.dart';
+import 'package:pomodoro_app/screens/home/timer_card.dart';
 
 class PomodoroHome extends StatelessWidget {
   @override
@@ -30,7 +30,7 @@ class PomodoroHome extends StatelessWidget {
       body: ListView(
         shrinkWrap: true,
         physics: const BouncingScrollPhysics(),
-        children: const [CardScreen(), StatisticsScreen()],
+        children: const [TimerCard(), Statistics()],
       ),
     );
   }

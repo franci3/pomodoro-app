@@ -3,8 +3,8 @@ import 'package:pomodoro_app/controller/timer_controller.dart';
 import 'package:pomodoro_app/widgets/stats_circle.dart';
 import 'package:provider/provider.dart';
 
-class StatisticsScreen extends StatelessWidget {
-  const StatisticsScreen({Key key}) : super(key: key);
+class Statistics extends StatelessWidget {
+  const Statistics({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
