@@ -4,19 +4,20 @@ description: A Pomodoro mobile application.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  audioplayers: ^0.17.3
-  cupertino_icons: ^1.0.0
+  audioplayers: ^1.1.1
+  cupertino_icons: ^1.0.5
   provider: ^6.0.4
+  flutter_local_notifications: ^12.0.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: "^0.8.0"
+  flutter_launcher_icons: ^0.10.0
 
 flutter_icons:
   android: "launcher_icon"

@@ -6,7 +6,7 @@ class StatsCircle extends StatelessWidget {
   final String innerCircleText;
   final String circleDescription;
 
-  StatsCircle({@required this.innerCircleText,@required this.circleValue,@required this.circleDescription});
+  StatsCircle({required this.innerCircleText,required this.circleValue,required this.circleDescription});
 
   @override
   Widget build(BuildContext context) {
@@ -28,16 +28,16 @@ class StatsCircle extends StatelessWidget {
                 ),
               ),
               Text(
-                '$innerCircleText',
-                style: TextStyle(
+                innerCircleText,
+                style: const TextStyle(
                     fontSize: 20,
                     color: Colors.black,
                     fontWeight: FontWeight.w500),
               )
             ],
           ),
-          Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-          Text(circleDescription, style: TextStyle(
+          const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+          Text(circleDescription, style: const TextStyle(
             fontSize: 20,
               color: Colors.black,
               fontWeight: FontWeight.w200),

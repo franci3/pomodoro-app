@@ -4,7 +4,7 @@ import 'package:pomodoro_app/assets/values/values.dart';
 import 'package:pomodoro_app/widgets/license_screen.dart';
 
 class LegalScreen extends StatelessWidget {
-  const LegalScreen({Key key}) : super(key: key);
+  const LegalScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

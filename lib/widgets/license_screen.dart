@@ -4,7 +4,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
 
 class LicenseScreen extends StatefulWidget {
-  const LicenseScreen({Key key}) : super(key: key);
+  const LicenseScreen({Key? key}) : super(key: key);
 
   @override
   _LicenseScreenState createState() => _LicenseScreenState();
@@ -23,7 +23,7 @@ class _LicenseScreenState extends State<LicenseScreen> {
 
   Future<void> _initLicenses() async {
     await for (final LicenseEntry license in LicenseRegistry.licenses) {
-      List<Widget> tempSubWidget = [];
+      List<Widget>? tempSubWidget = [];
       final List<LicenseParagraph> paragraphs =
           await SchedulerBinding.instance.scheduleTask<List<LicenseParagraph>>(
         license.paragraphs.toList,
@@ -36,7 +36,7 @@ class _LicenseScreenState extends State<LicenseScreen> {
       }
       for (LicenseParagraph paragraph in paragraphs) {
         if (paragraph.indent == LicenseParagraph.centeredIndent) {
-          tempSubWidget.add(Padding(
+          tempSubWidget?.add(Padding(
             padding: const EdgeInsets.all(8),
             child: Text(
               paragraph.text,
@@ -44,7 +44,7 @@ class _LicenseScreenState extends State<LicenseScreen> {
             ),
           ));
         } else {
-          tempSubWidget.add(Padding(
+          tempSubWidget?.add(Padding(
             padding: const EdgeInsets.all(8),
             child: Text(
               paragraph.text,
@@ -52,8 +52,8 @@ class _LicenseScreenState extends State<LicenseScreen> {
           ));
         }
       }
-      tempSubWidget.add(const Divider());
-      _licenseContent[license.packages.join(', ')] = tempSubWidget;
+      tempSubWidget?.add(const Divider());
+      _licenseContent[license.packages.join(', ')] = tempSubWidget!;
     }
 
     _licenseContent.forEach((String key, List<Widget> value) {

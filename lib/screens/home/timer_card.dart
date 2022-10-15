@@ -6,7 +6,7 @@ import 'package:pomodoro_app/widgets/circles_painter_widget.dart';
 import 'package:provider/provider.dart';
 
 class TimerCard extends StatelessWidget {
-  const TimerCard({Key key}) : super(key: key);
+  const TimerCard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +81,7 @@ class TimerCard extends StatelessWidget {
 }
 
 class CountDownWidget extends StatelessWidget {
-  const CountDownWidget({Key key}) : super(key: key);
+  const CountDownWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

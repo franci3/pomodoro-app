@@ -4,7 +4,7 @@ import 'package:pomodoro_app/widgets/stats_circle.dart';
 import 'package:provider/provider.dart';
 
 class Statistics extends StatelessWidget {
-  const Statistics({Key key}) : super(key: key);
+  const Statistics({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -6,6 +6,8 @@ import 'package:pomodoro_app/screens/home/timer_card.dart';
 import 'package:pomodoro_app/screens/legal/legal_screen.dart';
 
 class PomodoroHome extends StatelessWidget {
+  const PomodoroHome({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +25,11 @@ class PomodoroHome extends StatelessWidget {
             child: IconButton(
               icon: Icon(Icons.info, color: PomodoroValues.mainColor, size: 26),
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const LegalScreen()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            const LegalScreen()));
               },
             ),
           )

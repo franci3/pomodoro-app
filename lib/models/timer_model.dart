@@ -2,9 +2,9 @@ import 'package:pomodoro_app/assets/values/values.dart';
 
 class TimerModel {
   TimerModel(
-      {this.seconds,
-        this.roundCount,
-        this.fullRoundCount,
+      {required this.seconds,
+        required this.roundCount,
+        required this.fullRoundCount,
         this.minutes = PomodoroTimerValues.focusMinutes,
         this.totalSeconds = PomodoroTimerValues.totalFocusSeconds,
         this.animationSeconds = PomodoroTimerValues.totalFocusSeconds,

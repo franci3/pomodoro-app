@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
 import 'package:pomodoro_app/assets/values/values.dart';
@@ -10,7 +10,8 @@ class TimerController extends ChangeNotifier {
   TimerModel timerModel =
       TimerModel(seconds: 0, roundCount: 0, fullRoundCount: 0);
 
-  AudioCache audioPlayer = AudioCache(prefix: 'lib/assets/sounds/');
+  AudioCache audioCache = AudioCache(prefix: 'lib/assets/sounds/');
+  final AudioPlayer player = AudioPlayer();
 
   void _decrementSeconds() {
     timerModel.seconds--;
@@ -117,7 +118,8 @@ class TimerController extends ChangeNotifier {
   }
 
   void _playSound() async {
-    audioPlayer.play('484344__inspectorj__bike-bell-ding-single-01-01.mp3');
+    player.play(AssetSource(
+        'lib/assets/sounds/484344__inspectorj__bike-bell-ding-single-01-01.mp3'));
   }
 
   void pauseTimer() {
