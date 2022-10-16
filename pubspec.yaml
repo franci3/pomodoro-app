@@ -17,11 +17,15 @@ dependencies:
   flutter_local_notifications: ^12.0.2
   intl: ^0.17.0
   logger: ^1.1.0
+  isar: ^3.0.2
+  isar_flutter_libs: ^3.0.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.10.0
+  isar_generator: ^3.0.2
+  build_runner: ^2.3.0
 
 flutter_icons:
   android: "launcher_icon"
