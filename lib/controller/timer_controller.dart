@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
 import 'package:pomodoro_app/assets/values/values.dart';
 import 'package:pomodoro_app/models/timer_model.dart';
@@ -9,6 +10,9 @@ import 'package:pomodoro_app/models/timer_model.dart';
 class TimerController extends ChangeNotifier {
   TimerModel timerModel =
       TimerModel(seconds: 0, roundCount: 0, fullRoundCount: 0);
+
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
 
   AudioCache audioCache = AudioCache(prefix: 'lib/assets/sounds/');
   final AudioPlayer player = AudioPlayer();
@@ -41,7 +45,6 @@ class TimerController extends ChangeNotifier {
   void startTimer() {
     _startStopTimer();
     Timer.periodic(const Duration(seconds: 1), (Timer timer) {
-      print('Timer started');
       if (timerModel.timerIsActive && !timerModel.timerIsPaused) {
         _handleTimerCountdown();
       } else if (!timerModel.timerIsActive) {
@@ -52,17 +55,7 @@ class TimerController extends ChangeNotifier {
   }
 
   void _startStopTimer() {
-    //timerIsActive = !timerIsActive;
-    timerModel = TimerModel(
-        seconds: timerModel.seconds,
-        minutes: timerModel.minutes,
-        totalSeconds: timerModel.totalSeconds,
-        animationSeconds: timerModel.animationSeconds,
-        roundCount: timerModel.roundCount,
-        fullRoundCount: timerModel.fullRoundCount,
-        timerIsActive: !timerModel.timerIsActive,
-        timerIsPaused: timerModel.timerIsPaused,
-        focusPauseRound: timerModel.focusPauseRound);
+    timerModel.timerIsActive = !timerModel.timerIsActive;
     _playSound();
   }
 
@@ -80,15 +73,18 @@ class TimerController extends ChangeNotifier {
         _incrementRound();
         _resetAnimationSeconds();
         if (timerModel.roundCount == 4) {
+          _showNotification('Take a break', 'Sehr gut. Du hast dir 25 Minuten Pause verdient!', null);
           _resetRoundCount();
           _incrementFullRoundCount();
           timerModel.minutes = PomodoroTimerValues.longPauseMinutes;
           timerModel.totalSeconds = PomodoroTimerValues.totalLongPauseSeconds;
         } else {
+          _showNotification('Take a break', '5 Minuten Pause. Los gehts!', null);
           timerModel.minutes = PomodoroTimerValues.pauseMinutes;
           timerModel.totalSeconds = PomodoroTimerValues.totalPauseSeconds;
         }
       } else {
+        _showNotification('Lets focus!', 'Weiter gehts, du bist bei ${timerModel.roundCount} Runden!', null);
         _resetTimer();
       }
     }
@@ -117,9 +113,23 @@ class TimerController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _playSound() async {
+  Future<void> _showNotification(String title, String body, String? payload) async {
+    const DarwinNotificationDetails darwinNotificationDetails =
+    DarwinNotificationDetails(
+      interruptionLevel: InterruptionLevel.active,
+    );
+    const NotificationDetails notificationDetails =
+    NotificationDetails(iOS: darwinNotificationDetails);
+    await flutterLocalNotificationsPlugin.show(
+        3, title, body, notificationDetails,
+        payload: payload);
+  }
+
+  Future<void> _playSound() async {
+    player.audioCache = audioCache;
     player.play(AssetSource(
-        'lib/assets/sounds/484344__inspectorj__bike-bell-ding-single-01-01.mp3'));
+        '484344__inspectorj__bike-bell-ding-single-01-01.mp3'),
+    mode: PlayerMode.lowLatency);
   }
 
   void pauseTimer() {
