@@ -130,15 +130,8 @@ class _PomodoroState extends State<Pomodoro> {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Pomodoro App',
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-        ],
-        supportedLocales: const [
-          Locale('en', ''),
-          Locale('de', ''),
-        ],
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         debugShowCheckedModeBanner: false,
         theme: PomodoroValues.customTheme,
         home: const PomodoroHome());

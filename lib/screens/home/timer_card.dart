@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
 import 'package:pomodoro_app/controller/timer_controller.dart';
 import 'package:pomodoro_app/widgets/circles_painter_widget.dart';
@@ -29,7 +29,9 @@ class TimerCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        timer.timerModel.focusPauseRound ? 'BREAK' : 'SESSION',
+                        timer.timerModel.focusPauseRound
+                            ? AppLocalizations.of(context)!.breakTitle
+                            : AppLocalizations.of(context)!.sessionTitle,
                         style: PomodoroValues.customTextTheme.subtitle2,
                       ),
                     ],
@@ -61,7 +63,8 @@ class TimerCard extends StatelessWidget {
                           padding: const EdgeInsets.all(8.0),
                           child: CircularProgressIndicator(
                               value: 1 -
-                                  (timer.timerModel.totalSeconds / timer.timerModel.animationSeconds),
+                                  (timer.timerModel.totalSeconds /
+                                      timer.timerModel.animationSeconds),
                               strokeWidth: 16,
                               valueColor: AlwaysStoppedAnimation<Color>(
                                   PomodoroValues.yellowColorTwo)),
@@ -85,7 +88,8 @@ class CountDownWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TimerController timerController = Provider.of<TimerController>(context);
+    final TimerController timerController =
+        Provider.of<TimerController>(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

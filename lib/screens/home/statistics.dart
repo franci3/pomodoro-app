@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pomodoro_app/controller/timer_controller.dart';
 import 'package:pomodoro_app/widgets/stats_circle.dart';
 import 'package:provider/provider.dart';
@@ -32,18 +33,18 @@ class Statistics extends StatelessWidget {
                     innerCircleText:
                         timerController.timerModel.roundCount.toString(),
                     circleValue: timerController.timerModel.roundCount / 4,
-                    circleDescription: 'Runde',
+                    circleDescription: AppLocalizations.of(context)!.round,
                   ),
                   StatsCircle(
                     innerCircleText:
                         timerController.timerModel.fullRoundCount.toString(),
                     circleValue: 1,
-                    circleDescription: 'Pomodoro Runden',
+                    circleDescription: AppLocalizations.of(context)!.sessions,
                   ),
                   StatsCircle(
                     innerCircleText: 'To be done',
                     circleValue: 1,
-                    circleDescription: 'Fokuszeit insgesamt',
+                    circleDescription: AppLocalizations.of(context)!.focusTime,
                   )
                 ],
               ),

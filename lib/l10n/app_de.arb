@@ -1,6 +1,6 @@
 {
-    "session": "SESSION",
-    "break": "PAUSE",
+    "sessionTitle": "SESSION",
+    "breakTitle": "PAUSE",
     "round": "Runde",
     "sessions": "Sessions",
     "focusTime": "Fokuszeit insgesamt"
