@@ -3,5 +3,12 @@
     "breakTitle": "PAUSE",
     "round": "Runde",
     "sessions": "Sessions",
-    "focusTime": "Fokuszeit insgesamt"
+    "focusTime": "Fokuszeit insgesamt",
+    "resetData": "Daten zurücksetzen",
+    "notificationBreakTitle": "Kleine Pause",
+    "notificationBreakBody": "Sehr gut du hast eine Runde geschafft. Mach 5 Minuten Pause.",
+    "notificationLongBreakTitle": "Lange Pause",
+    "notificationLongBreakBody": "Eine Session hinter dir! Entspanne dich 25 Minuten, dann gehts weiter.",
+    "notificationResumeTitle": "Weiter gehts!",
+    "notificationResumeBody": "Zeit zum fokussieren. Du bist bei Runde "
 }

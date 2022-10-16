@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
 import 'package:pomodoro_app/assets/values/values.dart';
 import 'package:pomodoro_app/widgets/license_screen.dart';
@@ -30,13 +31,13 @@ class LegalScreen extends StatelessWidget {
               color: PomodoroValues.redColor,
               elevation: 15,
               child: Text(
-                'Fokuszeit zurücksetzen',
+                AppLocalizations.of(context)!.resetData,
                 style: PomodoroValues.customTextTheme.subtitle2,
               ),
             ),
           ),
           Container(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: Text(
                 PomodoroTimerValues.legalGreetingsParagraph,
                 style: PomodoroValues.customTextTheme.bodyText2,

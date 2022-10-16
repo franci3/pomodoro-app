@@ -6,8 +6,9 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
 import 'package:pomodoro_app/assets/values/values.dart';
 import 'package:pomodoro_app/models/timer_model.dart';
+import 'package:pomodoro_app/services/logger_service.dart';
 
-class TimerController extends ChangeNotifier {
+class TimerController extends ChangeNotifier with LoggerService {
   TimerModel timerModel =
       TimerModel(seconds: 0, roundCount: 0, fullRoundCount: 0);
 
@@ -56,6 +57,7 @@ class TimerController extends ChangeNotifier {
 
   void _startStopTimer() {
     timerModel.timerIsActive = !timerModel.timerIsActive;
+    logInfo('${timerModel.timerIsActive ? 'Sarting' : 'Stopping'} Timer');
     _playSound();
   }
 
@@ -73,6 +75,7 @@ class TimerController extends ChangeNotifier {
         _incrementRound();
         _resetAnimationSeconds();
         if (timerModel.roundCount == 4) {
+          // TODO(Vela): Translate notification text
           _showNotification('Take a break', 'Sehr gut. Du hast dir 25 Minuten Pause verdient!', null);
           _resetRoundCount();
           _incrementFullRoundCount();
@@ -114,6 +117,7 @@ class TimerController extends ChangeNotifier {
   }
 
   Future<void> _showNotification(String title, String body, String? payload) async {
+    logInfo('Showing notification: $body');
     const DarwinNotificationDetails darwinNotificationDetails =
     DarwinNotificationDetails(
       interruptionLevel: InterruptionLevel.active,
