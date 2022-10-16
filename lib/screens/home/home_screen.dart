@@ -4,9 +4,10 @@ import 'package:pomodoro_app/assets/values/values.dart';
 import 'package:pomodoro_app/screens/home/statistics.dart';
 import 'package:pomodoro_app/screens/home/timer_card.dart';
 import 'package:pomodoro_app/screens/legal/legal_screen.dart';
+import 'package:pomodoro_app/services/logger_service.dart';
 
-class PomodoroHome extends StatelessWidget {
-  const PomodoroHome({Key? key}) : super(key: key);
+class PomodoroHome extends StatelessWidget with LoggerService {
+  PomodoroHome({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
