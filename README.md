@@ -16,5 +16,10 @@ Die App dient zum einen als Lernhilfe für den Nutzer, zum anderen als eine Spie
 ## Localization
 
 Als Lokalisierung wird das von Flutter mitgebrachte (Localization Framework)[https://docs.flutter.dev/development/accessibility-and-localization/internationalization]
-verwendet. Insofern muss bei jeder Änderung an den Localization Files der Befehl `flutter gen-l10n` ausgeführt werden.
+verwendet. Insofern muss bei jeder Änderung an den Localization Files der Befehl `flutter gen-l10n`
+ausgeführt werden.
 
+## Data Persist
+
+Isar wird verwendet um die Daten zu persistieren. Um die dementsprechenden Schemas zu generiern
+muss `flutter pub run build_runner build` aufgerufen werden.
