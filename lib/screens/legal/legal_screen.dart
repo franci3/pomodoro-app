@@ -31,6 +31,7 @@ class LegalScreen extends StatelessWidget {
               onPressed: () {
                 Provider.of<TimerController>(context, listen: false)
                     .resetData();
+                Navigator.pop(context);
               },
               color: PomodoroValues.redColor,
               elevation: 15,

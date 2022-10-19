@@ -191,6 +191,8 @@ class TimerController extends ChangeNotifier with LoggerService {
   void resetData() {
     _sessionController.resetData();
     timerModel = TimerModel(seconds: 0, roundCount: 0, fullRoundCount: 0);
+    totalFocusTime = 0;
+    notifyListeners();
   }
 
   Widget countdownText() {
