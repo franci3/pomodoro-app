@@ -2,13 +2,13 @@ class PomodoroTimerValues {
 
   static const appTitle = 'Pomodoro Timer';
 
-  static const focusMinutes = 25;
+  static const focusMinutes = 1;
   static const totalFocusSeconds = focusMinutes * 60;
 
-  static const pauseMinutes = 5;
+  static const pauseMinutes = 1;
   static const totalPauseSeconds = pauseMinutes * 60;
 
-  static const longPauseMinutes = 15;
+  static const longPauseMinutes = 1;
   static const totalLongPauseSeconds = longPauseMinutes * 60;
 
   static const legalGreetingsParagraph = 'Vielen Dank dafür, dass du den '

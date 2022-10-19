@@ -11,22 +11,38 @@ import 'package:pomodoro_app/models/timer_model.dart';
 import 'package:pomodoro_app/services/logger_service.dart';
 
 class TimerController extends ChangeNotifier with LoggerService {
-
   TimerController() {
-    _sessionController.instanciateSessionSchema();
+    _sessionController
+        .instanciateSessionSchema()
+        .then((_) => getTodaysSessions());
   }
 
-  // TODO(Vela): Get Latest Session and set it to timer
   TimerModel timerModel =
       TimerModel(seconds: 0, roundCount: 0, fullRoundCount: 0);
 
   final SessionController _sessionController = SessionController();
 
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();
 
   AudioCache audioCache = AudioCache(prefix: 'lib/assets/sounds/');
   final AudioPlayer player = AudioPlayer();
+
+  Future<void> getTodaysSessions() async {
+    final List<Session>? todaySessions =
+        await _sessionController.getTodaysSessions();
+    todaySessions?.forEach((Session session) {
+      logInfo('Todays sessions: ${session.dateTime}');
+    });
+
+    if (todaySessions != null) {
+      timerModel = TimerModel(
+          seconds: 0,
+          roundCount: todaySessions.first.rounds!,
+          fullRoundCount: todaySessions.first.sessions!);
+      notifyListeners();
+    }
+  }
 
   void _decrementSeconds() {
     timerModel.seconds--;
@@ -46,10 +62,9 @@ class TimerController extends ChangeNotifier with LoggerService {
   void _incrementRound() {
     timerModel.roundCount++;
     _sessionController.persistSession(Session(
-      rounds: timerModel.roundCount,
-      sessions: timerModel.fullRoundCount,
-      totalFocusTime: 0
-    ));
+        rounds: timerModel.roundCount,
+        sessions: timerModel.fullRoundCount,
+        totalFocusTime: 0));
     notifyListeners();
   }
 
@@ -91,18 +106,21 @@ class TimerController extends ChangeNotifier with LoggerService {
         _resetAnimationSeconds();
         if (timerModel.roundCount == 4) {
           // TODO(Vela): Translate notification text
-          _showNotification('Take a break', 'Sehr gut. Du hast dir 25 Minuten Pause verdient!', null);
+          _showNotification('Take a break',
+              'Sehr gut. Du hast dir 25 Minuten Pause verdient!', null);
           _resetRoundCount();
           _incrementFullRoundCount();
           timerModel.minutes = PomodoroTimerValues.longPauseMinutes;
           timerModel.totalSeconds = PomodoroTimerValues.totalLongPauseSeconds;
         } else {
-          _showNotification('Take a break', '5 Minuten Pause. Los gehts!', null);
+          _showNotification(
+              'Take a break', '5 Minuten Pause. Los gehts!', null);
           timerModel.minutes = PomodoroTimerValues.pauseMinutes;
           timerModel.totalSeconds = PomodoroTimerValues.totalPauseSeconds;
         }
       } else {
-        _showNotification('Lets focus!', 'Weiter gehts, du bist bei ${timerModel.roundCount} Runden!', null);
+        _showNotification('Lets focus!',
+            'Weiter gehts, du bist bei ${timerModel.roundCount} Runden!', null);
         _resetTimer();
       }
     }
@@ -124,31 +142,34 @@ class TimerController extends ChangeNotifier with LoggerService {
   }
 
   void _resetTimer() {
-    timerModel = TimerModel(seconds: 0, roundCount: 0, fullRoundCount: 0);
+    timerModel = TimerModel(
+        seconds: 0,
+        roundCount: timerModel.roundCount,
+        fullRoundCount: timerModel.fullRoundCount);
     if (timerModel.timerIsPaused) {
       pauseTimer();
     }
     notifyListeners();
   }
 
-  Future<void> _showNotification(String title, String body, String? payload) async {
+  Future<void> _showNotification(
+      String title, String body, String? payload) async {
     logInfo('Showing notification: $body');
     const DarwinNotificationDetails darwinNotificationDetails =
-    DarwinNotificationDetails(
+        DarwinNotificationDetails(
       interruptionLevel: InterruptionLevel.active,
     );
     const NotificationDetails notificationDetails =
-    NotificationDetails(iOS: darwinNotificationDetails);
-    await flutterLocalNotificationsPlugin.show(
-        3, title, body, notificationDetails,
-        payload: payload);
+        NotificationDetails(iOS: darwinNotificationDetails);
+    await flutterLocalNotificationsPlugin
+        .show(3, title, body, notificationDetails, payload: payload);
   }
 
   Future<void> _playSound() async {
     player.audioCache = audioCache;
-    player.play(AssetSource(
-        '484344__inspectorj__bike-bell-ding-single-01-01.mp3'),
-    mode: PlayerMode.lowLatency);
+    player.play(
+        AssetSource('484344__inspectorj__bike-bell-ding-single-01-01.mp3'),
+        mode: PlayerMode.lowLatency);
   }
 
   void pauseTimer() {

@@ -7,7 +7,6 @@ class SessionController with LoggerService {
 
   Future<void> instanciateSessionSchema() async {
     isarInstance = await Isar.open([SessionSchema]);
-    logInfo('Instanciated Isar Instance ${isarInstance?.name}');
   }
 
   Future<Session?> persistSession(Session newSession) async {
@@ -42,8 +41,9 @@ class SessionController with LoggerService {
         .dateTimeGreaterThan(DateTime(
           DateTime.now().year,
           DateTime.now().month,
-          DateTime.now().day - 1,
+          DateTime.now().day,
         ))
+        .sortByDateTimeDesc()
         .findAll();
   }
 }
