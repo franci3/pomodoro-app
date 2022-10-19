@@ -10,12 +10,10 @@ class SessionController with LoggerService {
   }
 
   Future<Session?> persistSession(Session newSession) async {
-    logInfo('Persisting Session');
     try {
       await isarInstance?.writeTxn(() async {
         await isarInstance?.sessions
-            .put(newSession)
-            .then((Id value) => logInfo('Persisting Session with id $value'));
+            .put(newSession);
       });
       return newSession;
     } on Exception catch (e) {

@@ -42,7 +42,7 @@ class Statistics extends StatelessWidget {
                     circleDescription: AppLocalizations.of(context)!.sessions,
                   ),
                   StatsCircle(
-                    innerCircleText: 'To be done',
+                    innerCircleText: timerController.totalFocusTime.toString(),
                     circleValue: 1,
                     circleDescription: AppLocalizations.of(context)!.focusTime,
                   )

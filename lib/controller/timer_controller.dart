@@ -12,9 +12,10 @@ import 'package:pomodoro_app/services/logger_service.dart';
 
 class TimerController extends ChangeNotifier with LoggerService {
   TimerController() {
-    _sessionController
-        .instanciateSessionSchema()
-        .then((_) => getTodaysSessions());
+    _sessionController.instanciateSessionSchema().then((_) {
+      getTodaysSessions();
+      getTotalFocusMinutes();
+    });
   }
 
   TimerModel timerModel =
@@ -28,20 +29,28 @@ class TimerController extends ChangeNotifier with LoggerService {
   AudioCache audioCache = AudioCache(prefix: 'lib/assets/sounds/');
   final AudioPlayer player = AudioPlayer();
 
+  int totalFocusTime = 0;
+
   Future<void> getTodaysSessions() async {
     final List<Session>? todaySessions =
         await _sessionController.getTodaysSessions();
-    todaySessions?.forEach((Session session) {
-      logInfo('Todays sessions: ${session.dateTime}');
-    });
 
-    if (todaySessions != null) {
+    if (todaySessions!.isNotEmpty) {
       timerModel = TimerModel(
           seconds: 0,
           roundCount: todaySessions.first.rounds!,
           fullRoundCount: todaySessions.first.sessions!);
       notifyListeners();
     }
+  }
+
+  void getTotalFocusMinutes() {
+    _sessionController.getLatestSession().then((Session? session) {
+      print(session?.dateTime);
+      if (session != null) {
+        totalFocusTime = session.totalFocusTime!;
+      }
+    }).then((_) => notifyListeners());
   }
 
   void _decrementSeconds() {
@@ -61,10 +70,12 @@ class TimerController extends ChangeNotifier with LoggerService {
 
   void _incrementRound() {
     timerModel.roundCount++;
-    _sessionController.persistSession(Session(
-        rounds: timerModel.roundCount,
-        sessions: timerModel.fullRoundCount,
-        totalFocusTime: 0));
+    _sessionController
+        .persistSession(Session(
+            rounds: timerModel.roundCount,
+            sessions: timerModel.fullRoundCount,
+            totalFocusTime: totalFocusTime + PomodoroTimerValues.focusMinutes))
+        .then((_) => getTotalFocusMinutes());
     notifyListeners();
   }
 
