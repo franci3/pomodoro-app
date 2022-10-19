@@ -194,28 +194,4 @@ class TimerController extends ChangeNotifier with LoggerService {
     totalFocusTime = 0;
     notifyListeners();
   }
-
-  Widget countdownText() {
-    if (timerModel.minutes < 10 && timerModel.seconds < 10) {
-      return Text(
-        '0${timerModel.minutes}:0${timerModel.seconds}',
-        style: PomodoroValues.customTextTheme.headline2,
-      );
-    } else if (timerModel.minutes < 10) {
-      return Text(
-        '0${timerModel.minutes}:${timerModel.seconds}',
-        style: PomodoroValues.customTextTheme.headline2,
-      );
-    } else if (timerModel.seconds < 10) {
-      return Text(
-        '${timerModel.minutes}:0${timerModel.seconds}',
-        style: PomodoroValues.customTextTheme.headline2,
-      );
-    } else {
-      return Text(
-        '${timerModel.minutes}:${timerModel.seconds}',
-        style: PomodoroValues.customTextTheme.headline2,
-      );
-    }
-  }
 }

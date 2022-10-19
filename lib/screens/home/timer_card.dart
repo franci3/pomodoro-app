@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
 import 'package:pomodoro_app/controller/timer_controller.dart';
+import 'package:pomodoro_app/models/timer_model.dart';
 import 'package:pomodoro_app/widgets/circles_painter_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -93,7 +94,7 @@ class CountDownWidget extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        timerController.countdownText(),
+        const CountdownText(),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -120,4 +121,36 @@ class CountDownWidget extends StatelessWidget {
       ],
     );
   }
+}
+
+class CountdownText extends StatelessWidget {
+  const CountdownText({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final TimerModel timerModel =
+    Provider.of<TimerController>(context).timerModel;
+    if (timerModel.minutes < 10 && timerModel.seconds < 10) {
+      return Text(
+        '0${timerModel.minutes}:0${timerModel.seconds}',
+        style: PomodoroValues.customTextTheme.headline2,
+      );
+    } else if (timerModel.minutes < 10) {
+      return Text(
+        '0${timerModel.minutes}:${timerModel.seconds}',
+        style: PomodoroValues.customTextTheme.headline2,
+      );
+    } else if (timerModel.seconds < 10) {
+      return Text(
+        '${timerModel.minutes}:0${timerModel.seconds}',
+        style: PomodoroValues.customTextTheme.headline2,
+      );
+    } else {
+      return Text(
+        '${timerModel.minutes}:${timerModel.seconds}',
+        style: PomodoroValues.customTextTheme.headline2,
+      );
+    }
+  }
+
 }
