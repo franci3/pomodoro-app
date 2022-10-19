@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
 import 'package:pomodoro_app/assets/values/values.dart';
-import 'package:pomodoro_app/widgets/license_screen.dart';
+import 'package:pomodoro_app/controller/timer_controller.dart';
+import 'package:pomodoro_app/widgets/license_widget.dart';
+import 'package:provider/provider.dart';
 
 class LegalScreen extends StatelessWidget {
   const LegalScreen({Key? key}) : super(key: key);
@@ -26,8 +28,10 @@ class LegalScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 50.0),
             child: MaterialButton(
-              onPressed: () {},
-              //onPressed: () => statisticsController.resetTotalFocusTime(),
+              onPressed: () {
+                Provider.of<TimerController>(context, listen: false)
+                    .resetData();
+              },
               color: PomodoroValues.redColor,
               elevation: 15,
               child: Text(
@@ -63,7 +67,7 @@ class LegalScreen extends StatelessWidget {
               color: PomodoroValues.mainColor,
             ),
           ),
-          const LicenseScreen()
+          const LicensesWidget()
         ],
       ),
     );

@@ -12,8 +12,7 @@ class SessionController with LoggerService {
   Future<Session?> persistSession(Session newSession) async {
     try {
       await isarInstance?.writeTxn(() async {
-        await isarInstance?.sessions
-            .put(newSession);
+        await isarInstance?.sessions.put(newSession);
       });
       return newSession;
     } on Exception catch (e) {
@@ -43,5 +42,11 @@ class SessionController with LoggerService {
         ))
         .sortByDateTimeDesc()
         .findAll();
+  }
+
+  Future<void> resetData() async {
+    return await isarInstance?.writeTxn(() async {
+      await isarInstance?.clear();
+    });
   }
 }

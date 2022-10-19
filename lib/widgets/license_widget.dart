@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
 
-class LicenseScreen extends StatefulWidget {
-  const LicenseScreen({Key? key}) : super(key: key);
+class LicensesWidget extends StatefulWidget {
+  const LicensesWidget({Key? key}) : super(key: key);
 
   @override
-  _LicenseScreenState createState() => _LicenseScreenState();
+  _LicensesWidgetState createState() => _LicensesWidgetState();
 }
 
-class _LicenseScreenState extends State<LicenseScreen> {
+class _LicensesWidgetState extends State<LicensesWidget> {
   final List<Widget> _licenses = <Widget>[];
   final Map<String, List<Widget>> _licenseContent = {};
   bool _loaded = false;
@@ -34,7 +34,7 @@ class _LicenseScreenState extends State<LicenseScreen> {
         tempSubWidget =
             _licenseContent[license.packages.join(', ')];
       }
-      for (LicenseParagraph paragraph in paragraphs) {
+      for (final LicenseParagraph paragraph in paragraphs) {
         if (paragraph.indent == LicenseParagraph.centeredIndent) {
           tempSubWidget?.add(Padding(
             padding: const EdgeInsets.all(8),
