@@ -10,7 +10,7 @@ class TimerScreen extends StatelessWidget {
     return Column(
       children: const [
         TimerCard(),
-        Statistics(),
+        Expanded(child: Statistics()),
       ],
     );
   }
