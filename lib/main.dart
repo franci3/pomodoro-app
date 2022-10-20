@@ -8,7 +8,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:logger/logger.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
 import 'package:pomodoro_app/controller/timer_controller.dart';
-import 'package:pomodoro_app/screens/home/home_screen.dart';
+import 'package:pomodoro_app/screens/home/pomodoro_home_screen.dart';
 import 'package:provider/provider.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
