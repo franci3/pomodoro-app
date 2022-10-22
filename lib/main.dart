@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,7 +6,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:logger/logger.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
+import 'package:pomodoro_app/controller/data_controller.dart';
 import 'package:pomodoro_app/controller/timer_controller.dart';
+import 'package:pomodoro_app/models/database/settings_model.dart';
+import 'package:pomodoro_app/screens/enable_notifications_screen.dart';
 import 'package:pomodoro_app/screens/home/pomodoro_home_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -53,6 +55,9 @@ void main() async {
 
   final DarwinInitializationSettings initializationSettingsDarwin =
       DarwinInitializationSettings(
+    requestAlertPermission: false,
+    requestBadgePermission: false,
+    requestSoundPermission: false,
     onDidReceiveLocalNotification:
         (int id, String? title, String? body, String? payload) async {
       didReceiveLocalNotificationStream.add(
@@ -88,43 +93,12 @@ class Pomodoro extends StatefulWidget {
 }
 
 class _PomodoroState extends State<Pomodoro> {
-  bool _notificationsEnabled = false;
-
-  Future<void> _requestPermissions() async {
-    if (Platform.isIOS) {
-      await flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-              IOSFlutterLocalNotificationsPlugin>()
-          ?.requestPermissions(
-            alert: true,
-            badge: true,
-            sound: true,
-            critical: true,
-          );
-      await flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-              MacOSFlutterLocalNotificationsPlugin>()
-          ?.requestPermissions(
-            alert: true,
-            badge: true,
-            sound: true,
-            critical: true,
-          );
-    } else if (Platform.isAndroid) {
-      final AndroidFlutterLocalNotificationsPlugin? androidImplementation =
-          flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>();
-
-      final bool? granted = await androidImplementation?.requestPermission();
-      setState(() {
-        _notificationsEnabled = granted ?? false;
-      });
-    }
-  }
+  final DatabaseController databaseController = DatabaseController();
+  late Future<Settings> getSettings;
 
   @override
   void initState() {
-    _requestPermissions();
+    getSettings = databaseController.readSettings();
     super.initState();
   }
 
@@ -136,6 +110,20 @@ class _PomodoroState extends State<Pomodoro> {
         supportedLocales: AppLocalizations.supportedLocales,
         debugShowCheckedModeBanner: false,
         theme: PomodoroValues.customTheme,
-        home: PomodoroHome());
+        home: FutureBuilder(
+          future: getSettings,
+          builder: (BuildContext context, AsyncSnapshot<Settings> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting ||
+                snapshot.data == null) {
+              return Container();
+            } else {
+              if (!snapshot.data!.enableNotifications && snapshot.data!.lastUpdatedAt == null) {
+                return const EnableNotificationsScreen();
+              } else {
+                return PomodoroHome();
+              }
+            }
+          },
+        ));
   }
 }

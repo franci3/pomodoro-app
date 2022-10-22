@@ -15,5 +15,7 @@
     "notificationLongBreakTitle": "Lange Pause",
     "notificationLongBreakBody": "Eine Session hinter dir! Entspanne dich 25 Minuten, dann gehts weiter.",
     "notificationResumeTitle": "Weiter gehts!",
-    "notificationResumeBody": "Zeit zum fokussieren. Du bist bei Runde "
+    "notificationResumeBody": "Zeit zum fokussieren. Du bist bei Runde ",
+    "enableNotificationsTitle": "Benachrichtigungen",
+    "enableNotificationsDescription": "Damit wir dich benachrichtigen können sobald du eine Focus Session abgeschlossen hast, aktiviere bitte die Benachrichtigungen."
 }

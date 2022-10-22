@@ -5,6 +5,7 @@ import 'package:pomodoro_app/assets/custom_theme.dart';
 import 'package:pomodoro_app/controller/data_controller.dart';
 import 'package:pomodoro_app/controller/timer_controller.dart';
 import 'package:pomodoro_app/models/database/settings_model.dart';
+import 'package:pomodoro_app/widgets/column_padding.dart';
 import 'package:pomodoro_app/widgets/minute_switch.dart';
 import 'package:provider/provider.dart';
 
@@ -38,9 +39,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           borderRadius: const BorderRadius.only(
               bottomRight: Radius.circular(45),
               bottomLeft: Radius.circular(45))),
-      child: Padding(
-          padding: const EdgeInsets.only(top: 30.0)
-              .add(const EdgeInsets.symmetric(horizontal: 32)),
+      child: ColumnPadding(
           child: FutureBuilder(
             future: getSettings,
             builder: (BuildContext context, AsyncSnapshot<Settings> snapshot) {
@@ -49,7 +48,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   color: PomodoroValues.mainColor,
                 );
               } else {
-                print(snapshot.data);
                 return SettingsValues(settings: snapshot.data!);
               }
             },

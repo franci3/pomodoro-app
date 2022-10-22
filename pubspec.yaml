@@ -20,6 +20,7 @@ dependencies:
   isar: ^3.0.2
   isar_flutter_libs: ^3.0.2
   shared_preferences: ^2.0.15
+  video_player: ^2.4.7
 
 dev_dependencies:
   flutter_test:
@@ -39,6 +40,7 @@ flutter:
 
   assets:
     - lib/assets/sounds/484344__inspectorj__bike-bell-ding-single-01-01.mp3
+    - lib/assets/videos/notification_video.mp4
 
   fonts:
     - family: Roboto
