@@ -3,8 +3,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
 import 'package:pomodoro_app/controller/data_controller.dart';
+import 'package:pomodoro_app/controller/timer_controller.dart';
 import 'package:pomodoro_app/models/database/settings_model.dart';
 import 'package:pomodoro_app/widgets/minute_switch.dart';
+import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -85,26 +87,12 @@ class _SettingsValuesState extends State<SettingsValues> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
           AppLocalizations.of(context)!.settings,
           style: PomodoroValues.customTextTheme.subtitle2,
           textAlign: TextAlign.center,
-        ),
-        const Spacer(),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Last edited',
-              style: PomodoroValues.customTextTheme.subtitle2,
-            ),
-            Text(
-              DateFormat.yMMMEd(AppLocalizations.of(context)?.localeName)
-                  .format(DateTime.now()),
-              style: PomodoroValues.customTextTheme.subtitle2,
-            ),
-          ],
         ),
         const Spacer(),
         Row(
@@ -206,7 +194,24 @@ class _SettingsValuesState extends State<SettingsValues> {
           ],
         ),
         const Spacer(
-          flex: 10,
+          flex: 5,
+        ),
+        MaterialButton(
+          height: 50,
+          onPressed: () {
+            Provider.of<TimerController>(context, listen: false)
+                .resetData();
+            Navigator.pop(context);
+          },
+          color: PomodoroValues.redColor,
+          elevation: 15,
+          child: Text(
+            AppLocalizations.of(context)!.resetData,
+            style: PomodoroValues.customTextTheme.subtitle2,
+          ),
+        ),
+        const Spacer(
+          flex: 5,
         )
       ],
     );

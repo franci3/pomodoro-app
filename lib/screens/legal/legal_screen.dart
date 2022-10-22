@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
 import 'package:pomodoro_app/assets/values/values.dart';
-import 'package:pomodoro_app/controller/timer_controller.dart';
 import 'package:pomodoro_app/widgets/license_widget.dart';
-import 'package:provider/provider.dart';
 
 class LegalScreen extends StatelessWidget {
   const LegalScreen({Key? key}) : super(key: key);
@@ -25,22 +22,6 @@ class LegalScreen extends StatelessWidget {
       backgroundColor: PomodoroValues.cardColor,
       body: ListView(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 50.0),
-            child: MaterialButton(
-              onPressed: () {
-                Provider.of<TimerController>(context, listen: false)
-                    .resetData();
-                Navigator.pop(context);
-              },
-              color: PomodoroValues.redColor,
-              elevation: 15,
-              child: Text(
-                AppLocalizations.of(context)!.resetData,
-                style: PomodoroValues.customTextTheme.subtitle2,
-              ),
-            ),
-          ),
           Container(
               padding: const EdgeInsets.all(20),
               child: Text(
