@@ -15,7 +15,6 @@ class Session {
       CompositeIndex('dateTime'),
     ],
   )
-
   Id sessionId;
   DateTime dateTime;
   int? totalFocusTime;

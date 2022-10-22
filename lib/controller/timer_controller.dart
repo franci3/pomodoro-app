@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
 import 'package:pomodoro_app/assets/values/values.dart';
-import 'package:pomodoro_app/controller/session_controller.dart';
-import 'package:pomodoro_app/models/session_model.dart';
+import 'package:pomodoro_app/controller/data_controller.dart';
+import 'package:pomodoro_app/models/database/session_model.dart';
 import 'package:pomodoro_app/models/timer_model.dart';
 import 'package:pomodoro_app/services/logger_service.dart';
 
 class TimerController extends ChangeNotifier with LoggerService {
   TimerController() {
-    _sessionController.instanciateSessionSchema().then((_) {
+    _sessionController.instanciateDatabase().then((_) {
       getTodaysSessions();
       getTotalFocusMinutes();
     });
@@ -21,7 +21,7 @@ class TimerController extends ChangeNotifier with LoggerService {
   TimerModel timerModel =
       TimerModel(seconds: 0, roundCount: 0, fullRoundCount: 0);
 
-  final SessionController _sessionController = SessionController();
+  final DatabaseController _sessionController = DatabaseController();
 
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();

@@ -1,11 +1,13 @@
 import 'package:isar/isar.dart';
-import 'package:pomodoro_app/models/session_model.dart';
+import 'package:pomodoro_app/models/database/session_model.dart';
+import 'package:pomodoro_app/models/database/settings_model.dart';
 import 'package:pomodoro_app/services/logger_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class SessionController with LoggerService {
+class DatabaseController with LoggerService {
   Isar? isarInstance;
 
-  Future<void> instanciateSessionSchema() async {
+  Future<void> instanciateDatabase() async {
     isarInstance = await Isar.open([SessionSchema]);
   }
 
@@ -48,5 +50,16 @@ class SessionController with LoggerService {
     return await isarInstance?.writeTxn(() async {
       await isarInstance?.clear();
     });
+  }
+
+  Future<Settings> readSettings() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? settingsFromPrefs = prefs.getString('settings');
+    return Settings.fromString(settingsFromPrefs);
+  }
+
+  Future<void> writeSettings(String settingsAsString) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('settings', settingsAsString);
   }
 }
