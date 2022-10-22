@@ -7,6 +7,7 @@ import 'package:pomodoro_app/assets/custom_theme.dart';
 import 'package:pomodoro_app/assets/values/values.dart';
 import 'package:pomodoro_app/controller/data_controller.dart';
 import 'package:pomodoro_app/models/database/session_model.dart';
+import 'package:pomodoro_app/models/database/settings_model.dart';
 import 'package:pomodoro_app/models/timer_model.dart';
 import 'package:pomodoro_app/services/logger_service.dart';
 
@@ -16,7 +17,10 @@ class TimerController extends ChangeNotifier with LoggerService {
       getTodaysSessions();
       getTotalFocusMinutes();
     });
+    _databaseController = DatabaseController();
   }
+
+  late DatabaseController _databaseController;
 
   TimerModel timerModel =
       TimerModel(seconds: 0, roundCount: 0, fullRoundCount: 0);
@@ -166,14 +170,18 @@ class TimerController extends ChangeNotifier with LoggerService {
   Future<void> _showNotification(
       String title, String body, String? payload) async {
     logInfo('Showing notification: $body');
-    const DarwinNotificationDetails darwinNotificationDetails =
-        DarwinNotificationDetails(
-      interruptionLevel: InterruptionLevel.active,
-    );
-    const NotificationDetails notificationDetails =
-        NotificationDetails(iOS: darwinNotificationDetails);
-    await flutterLocalNotificationsPlugin
-        .show(3, title, body, notificationDetails, payload: payload);
+    _databaseController.readSettings().then((Settings? settings) async {
+      if (settings != null && settings.enableNotifications) {
+        const DarwinNotificationDetails darwinNotificationDetails =
+            DarwinNotificationDetails(
+          interruptionLevel: InterruptionLevel.active,
+        );
+        const NotificationDetails notificationDetails =
+            NotificationDetails(iOS: darwinNotificationDetails);
+        await flutterLocalNotificationsPlugin
+            .show(3, title, body, notificationDetails, payload: payload);
+      }
+    });
   }
 
   Future<void> _playSound() async {

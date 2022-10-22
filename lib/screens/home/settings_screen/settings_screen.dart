@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
 import 'package:pomodoro_app/controller/data_controller.dart';
@@ -8,6 +11,10 @@ import 'package:pomodoro_app/models/database/settings_model.dart';
 import 'package:pomodoro_app/widgets/column_padding.dart';
 import 'package:pomodoro_app/widgets/minute_switch.dart';
 import 'package:provider/provider.dart';
+import 'package:wakelock/wakelock.dart';
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -17,7 +24,6 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-
   late Future<Settings> getSettings;
 
   Future<Settings> readDatabaseValues() async {
@@ -41,17 +47,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
               bottomLeft: Radius.circular(45))),
       child: ColumnPadding(
           child: FutureBuilder(
-            future: getSettings,
-            builder: (BuildContext context, AsyncSnapshot<Settings> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
-                return CircularProgressIndicator(
-                  color: PomodoroValues.mainColor,
-                );
-              } else {
-                return SettingsValues(settings: snapshot.data!);
-              }
-            },
-          )),
+        future: getSettings,
+        builder: (BuildContext context, AsyncSnapshot<Settings> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting ||
+              snapshot.data == null) {
+            return CircularProgressIndicator(
+              color: PomodoroValues.mainColor,
+            );
+          } else {
+            return SettingsValues(settings: snapshot.data!);
+          }
+        },
+      )),
     );
   }
 }
@@ -65,20 +72,19 @@ class SettingsValues extends StatefulWidget {
 }
 
 class _SettingsValuesState extends State<SettingsValues> {
-
   late Settings currentSettings;
   final DatabaseController databaseController = DatabaseController();
 
   @override
   void initState() {
     currentSettings = Settings(
-      lastUpdatedAt: widget.settings.lastUpdatedAt,
-      shortPauseMinutes:  widget.settings.shortPauseMinutes,
-      preventDisplayFromGoingToSleep: widget.settings.preventDisplayFromGoingToSleep,
-      longPauseMinutes: widget.settings.longPauseMinutes,
-      focusMinutes: widget.settings.focusMinutes,
-      enableNotifications: widget.settings.enableNotifications
-    );
+        lastUpdatedAt: widget.settings.lastUpdatedAt,
+        shortPauseMinutes: widget.settings.shortPauseMinutes,
+        preventDisplayFromGoingToSleep:
+            widget.settings.preventDisplayFromGoingToSleep,
+        longPauseMinutes: widget.settings.longPauseMinutes,
+        focusMinutes: widget.settings.focusMinutes,
+        enableNotifications: widget.settings.enableNotifications);
     super.initState();
   }
 
@@ -104,11 +110,24 @@ class _SettingsValuesState extends State<SettingsValues> {
               value: currentSettings.enableNotifications,
               activeColor: PomodoroValues.orangeColor,
               inactiveThumbColor: PomodoroValues.mainColor,
-              onChanged: (bool value) {
-                setState(() {
-                  currentSettings.enableNotifications = value;
-                  saveSettings();
-                });
+              onChanged: (bool newValue) async {
+                if(newValue == true) {
+                  await _requestPermissions().then((bool? notificationEnabled) {
+                    if(notificationEnabled == null || !notificationEnabled) {
+                      showEnableNotificationsInSettingsDialog();
+                    } else {
+                      setState(() {
+                        currentSettings.enableNotifications = notificationEnabled;
+                        saveSettings();
+                      });
+                    }
+                  });
+                } else {
+                  setState(() {
+                    currentSettings.enableNotifications = false;
+                    saveSettings();
+                  });
+                }
               },
             ),
           ],
@@ -128,6 +147,7 @@ class _SettingsValuesState extends State<SettingsValues> {
               onChanged: (bool value) {
                 setState(() {
                   currentSettings.preventDisplayFromGoingToSleep = value;
+                  Wakelock.toggle(enable: currentSettings.preventDisplayFromGoingToSleep);
                   saveSettings();
                 });
               },
@@ -197,8 +217,7 @@ class _SettingsValuesState extends State<SettingsValues> {
         MaterialButton(
           height: 50,
           onPressed: () {
-            Provider.of<TimerController>(context, listen: false)
-                .resetData();
+            Provider.of<TimerController>(context, listen: false).resetData();
             Navigator.pop(context);
           },
           color: PomodoroValues.redColor,
@@ -213,6 +232,44 @@ class _SettingsValuesState extends State<SettingsValues> {
         )
       ],
     );
+  }
+
+  void showEnableNotificationsInSettingsDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            backgroundColor: PomodoroValues.mainColor,
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Text(
+                'Wechsle in die Einstellungen um Pomodoro Timer die Erlaubnis für Benachrichtigungen erteilen zu können.',
+                style: PomodoroValues.customTextTheme.subtitle2
+                    ?.copyWith(color: PomodoroValues.cardColor),
+              ),
+            ),
+          );
+        });
+  }
+
+  Future<bool?> _requestPermissions() async {
+    if (Platform.isIOS) {
+      return await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              IOSFlutterLocalNotificationsPlugin>()
+          ?.requestPermissions(
+            alert: true,
+            badge: true,
+            sound: true,
+            critical: true,
+          );
+    } else if (Platform.isAndroid) {
+      final AndroidFlutterLocalNotificationsPlugin? androidImplementation =
+          flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>();
+      return await androidImplementation?.requestPermission();
+    }
+    return null;
   }
 
   void saveSettings() {
