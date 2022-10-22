@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
 import 'package:pomodoro_app/assets/values/values.dart';
 import 'package:pomodoro_app/widgets/license_widget.dart';
@@ -25,7 +26,7 @@ class LegalScreen extends StatelessWidget {
           Container(
               padding: const EdgeInsets.all(20),
               child: Text(
-                PomodoroTimerValues.legalGreetingsParagraph,
+                AppLocalizations.of(context)!.legalText,
                 style: PomodoroValues.customTextTheme.bodyText2,
               )),
           Row(

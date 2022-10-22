@@ -1,13 +1,11 @@
-import 'package:pomodoro_app/assets/values/values.dart';
-
 class TimerModel {
   TimerModel(
       {required this.seconds,
         required this.roundCount,
         required this.fullRoundCount,
-        this.minutes = PomodoroTimerValues.focusMinutes,
-        this.totalSeconds = PomodoroTimerValues.totalFocusSeconds,
-        this.animationSeconds = PomodoroTimerValues.totalFocusSeconds,
+        required this.minutes,
+        required this.totalSeconds,
+        required this.animationSeconds,
         this.timerIsActive = false,
         this.timerIsPaused = false,
         this.focusPauseRound = false});

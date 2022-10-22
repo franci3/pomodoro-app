@@ -13,17 +13,24 @@ import 'package:pomodoro_app/services/logger_service.dart';
 
 class TimerController extends ChangeNotifier with LoggerService {
   TimerController() {
-    _sessionController.instanciateDatabase().then((_) {
+    _sessionController.instanciateDatabase().then((_) async {
+      _databaseController = DatabaseController();
+      await instanciatePomodoroTimerValues();
       getTodaysSessions();
       getTotalFocusMinutes();
     });
-    _databaseController = DatabaseController();
   }
 
   late DatabaseController _databaseController;
+  late PomodoroTimerValues pomodoroTimerValues;
 
-  TimerModel timerModel =
-      TimerModel(seconds: 0, roundCount: 0, fullRoundCount: 0);
+  TimerModel timerModel = TimerModel(
+      seconds: 0,
+      roundCount: 0,
+      fullRoundCount: 0,
+      minutes: 25,
+      totalSeconds: 25 * 60,
+      animationSeconds: 25 * 60);
 
   final DatabaseController _sessionController = DatabaseController();
 
@@ -35,15 +42,28 @@ class TimerController extends ChangeNotifier with LoggerService {
 
   int totalFocusTime = 0;
 
+  Future<void> instanciatePomodoroTimerValues() async {
+    await _databaseController.readSettings().then((Settings settings) {
+      pomodoroTimerValues = PomodoroTimerValues(
+          focusMinutes: settings.focusMinutes,
+          pauseMinutes: settings.shortPauseMinutes,
+          longPauseMinutes: settings.longPauseMinutes);
+    });
+  }
+
   Future<void> getTodaysSessions() async {
     final List<Session>? todaySessions =
         await _sessionController.getTodaysSessions();
 
     if (todaySessions!.isNotEmpty) {
       timerModel = TimerModel(
-          seconds: 0,
-          roundCount: todaySessions.first.rounds!,
-          fullRoundCount: todaySessions.first.sessions!);
+        seconds: 0,
+        roundCount: todaySessions.first.rounds!,
+        fullRoundCount: todaySessions.first.sessions!,
+        minutes: pomodoroTimerValues.focusMinutes,
+        totalSeconds: pomodoroTimerValues.totalFocusSeconds(),
+        animationSeconds: pomodoroTimerValues.totalFocusSeconds(),
+      );
       notifyListeners();
     }
   }
@@ -78,7 +98,7 @@ class TimerController extends ChangeNotifier with LoggerService {
         .persistSession(Session(
             rounds: timerModel.roundCount,
             sessions: timerModel.fullRoundCount,
-            totalFocusTime: totalFocusTime + PomodoroTimerValues.focusMinutes))
+            totalFocusTime: totalFocusTime + pomodoroTimerValues.focusMinutes))
         .then((_) => getTotalFocusMinutes());
     notifyListeners();
   }
@@ -121,17 +141,21 @@ class TimerController extends ChangeNotifier with LoggerService {
         _resetAnimationSeconds();
         if (timerModel.roundCount == 4) {
           // TODO(Vela): Translate notification text
-          _showNotification('Take a break',
-              'Sehr gut. Du hast dir 25 Minuten Pause verdient!', null);
+          _showNotification(
+              'Take a break',
+              'Sehr gut. Du hast dir ${pomodoroTimerValues.longPauseMinutes} Minuten Pause verdient!',
+              null);
           _resetRoundCount();
           _incrementFullRoundCount();
-          timerModel.minutes = PomodoroTimerValues.longPauseMinutes;
-          timerModel.totalSeconds = PomodoroTimerValues.totalLongPauseSeconds;
+          timerModel.minutes = pomodoroTimerValues.longPauseMinutes;
+          timerModel.totalSeconds = pomodoroTimerValues.totalLongPauseSeconds();
         } else {
           _showNotification(
-              'Take a break', '5 Minuten Pause. Los gehts!', null);
-          timerModel.minutes = PomodoroTimerValues.pauseMinutes;
-          timerModel.totalSeconds = PomodoroTimerValues.totalPauseSeconds;
+              'Take a break',
+              '${pomodoroTimerValues.pauseMinutes} Minuten Pause. Los gehts!',
+              null);
+          timerModel.minutes = pomodoroTimerValues.pauseMinutes;
+          timerModel.totalSeconds = pomodoroTimerValues.totalPauseSeconds();
         }
       } else {
         _showNotification('Lets focus!',
@@ -147,7 +171,7 @@ class TimerController extends ChangeNotifier with LoggerService {
   }
 
   void _resetAnimationSeconds() {
-    timerModel.totalSeconds = PomodoroTimerValues.totalPauseSeconds;
+    timerModel.totalSeconds = pomodoroTimerValues.totalPauseSeconds();
     notifyListeners();
   }
 
@@ -160,7 +184,10 @@ class TimerController extends ChangeNotifier with LoggerService {
     timerModel = TimerModel(
         seconds: 0,
         roundCount: timerModel.roundCount,
-        fullRoundCount: timerModel.fullRoundCount);
+        fullRoundCount: timerModel.fullRoundCount,
+        minutes: pomodoroTimerValues.focusMinutes,
+        totalSeconds: pomodoroTimerValues.totalFocusSeconds(),
+        animationSeconds: pomodoroTimerValues.totalFocusSeconds());
     if (timerModel.timerIsPaused) {
       pauseTimer();
     }
@@ -169,7 +196,6 @@ class TimerController extends ChangeNotifier with LoggerService {
 
   Future<void> _showNotification(
       String title, String body, String? payload) async {
-    logInfo('Showing notification: $body');
     _databaseController.readSettings().then((Settings? settings) async {
       if (settings != null && settings.enableNotifications) {
         const DarwinNotificationDetails darwinNotificationDetails =
@@ -198,8 +224,24 @@ class TimerController extends ChangeNotifier with LoggerService {
 
   void resetData() {
     _sessionController.resetData();
-    timerModel = TimerModel(seconds: 0, roundCount: 0, fullRoundCount: 0);
+    timerModel = TimerModel(
+        seconds: 0,
+        roundCount: 0,
+        fullRoundCount: 0,
+        minutes: 25,
+        totalSeconds: 25 * 60,
+        animationSeconds: 25 * 60);
     totalFocusTime = 0;
+    notifyListeners();
+  }
+
+  void updatePomodoroValues(int focusMinutes, int shortPause, int longPause) {
+    pomodoroTimerValues.focusMinutes = focusMinutes;
+    pomodoroTimerValues.pauseMinutes = shortPause;
+    pomodoroTimerValues.longPauseMinutes = longPause;
+    timerModel.minutes = pomodoroTimerValues.focusMinutes;
+    timerModel.totalSeconds = pomodoroTimerValues.totalFocusSeconds();
+    timerModel.animationSeconds = pomodoroTimerValues.totalFocusSeconds();
     notifyListeners();
   }
 }

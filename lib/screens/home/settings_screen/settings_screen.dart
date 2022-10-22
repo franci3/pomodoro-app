@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:intl/intl.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
 import 'package:pomodoro_app/controller/data_controller.dart';
 import 'package:pomodoro_app/controller/timer_controller.dart';
@@ -111,13 +110,14 @@ class _SettingsValuesState extends State<SettingsValues> {
               activeColor: PomodoroValues.orangeColor,
               inactiveThumbColor: PomodoroValues.mainColor,
               onChanged: (bool newValue) async {
-                if(newValue == true) {
+                if (newValue == true) {
                   await _requestPermissions().then((bool? notificationEnabled) {
-                    if(notificationEnabled == null || !notificationEnabled) {
+                    if (notificationEnabled == null || !notificationEnabled) {
                       showEnableNotificationsInSettingsDialog();
                     } else {
                       setState(() {
-                        currentSettings.enableNotifications = notificationEnabled;
+                        currentSettings.enableNotifications =
+                            notificationEnabled;
                         saveSettings();
                       });
                     }
@@ -147,7 +147,8 @@ class _SettingsValuesState extends State<SettingsValues> {
               onChanged: (bool value) {
                 setState(() {
                   currentSettings.preventDisplayFromGoingToSleep = value;
-                  Wakelock.toggle(enable: currentSettings.preventDisplayFromGoingToSleep);
+                  Wakelock.toggle(
+                      enable: currentSettings.preventDisplayFromGoingToSleep);
                   saveSettings();
                 });
               },
@@ -275,5 +276,9 @@ class _SettingsValuesState extends State<SettingsValues> {
   void saveSettings() {
     currentSettings.lastUpdatedAt = DateTime.now();
     databaseController.writeSettings(currentSettings.toString());
+    Provider.of<TimerController>(context, listen: false).updatePomodoroValues(
+        currentSettings.focusMinutes,
+        currentSettings.shortPauseMinutes,
+        currentSettings.longPauseMinutes);
   }
 }
