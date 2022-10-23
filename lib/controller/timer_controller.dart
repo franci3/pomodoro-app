@@ -122,7 +122,6 @@ class TimerController extends ChangeNotifier with LoggerService {
 
   void _startStopTimer() {
     timerModel.timerIsActive = !timerModel.timerIsActive;
-    logInfo('${timerModel.timerIsActive ? 'Sarting' : 'Stopping'} Timer');
     _playSound();
   }
 
@@ -140,7 +139,6 @@ class TimerController extends ChangeNotifier with LoggerService {
         _incrementRound();
         _resetAnimationSeconds();
         if (timerModel.roundCount == 4) {
-          // TODO(Vela): Translate notification text
           _showNotification(
               'Take a break',
               'Sehr gut. Du hast dir ${pomodoroTimerValues.longPauseMinutes} Minuten Pause verdient!',

@@ -7,6 +7,7 @@ import 'package:pomodoro_app/assets/custom_theme.dart';
 import 'package:pomodoro_app/controller/data_controller.dart';
 import 'package:pomodoro_app/controller/timer_controller.dart';
 import 'package:pomodoro_app/models/database/settings_model.dart';
+import 'package:pomodoro_app/widgets/circles_painter_widget.dart';
 import 'package:pomodoro_app/widgets/column_padding.dart';
 import 'package:pomodoro_app/widgets/minute_switch.dart';
 import 'package:provider/provider.dart';
@@ -44,20 +45,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
           borderRadius: const BorderRadius.only(
               bottomRight: Radius.circular(45),
               bottomLeft: Radius.circular(45))),
-      child: ColumnPadding(
-          child: FutureBuilder(
-        future: getSettings,
-        builder: (BuildContext context, AsyncSnapshot<Settings> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting ||
-              snapshot.data == null) {
-            return CircularProgressIndicator(
-              color: PomodoroValues.mainColor,
-            );
-          } else {
-            return SettingsValues(settings: snapshot.data!);
-          }
-        },
-      )),
+      child: Stack(
+        children: [
+          Positioned(
+            left: 410,
+            bottom: 150,
+            child: CustomPaint(
+              painter: CirclesPainter(),
+            ),
+          ),
+          ColumnPadding(
+              child: FutureBuilder(
+            future: getSettings,
+            builder: (BuildContext context, AsyncSnapshot<Settings> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting ||
+                  snapshot.data == null) {
+                return Container();
+              } else {
+                return SettingsValues(settings: snapshot.data!);
+              }
+            },
+          )),
+        ],
+      ),
     );
   }
 }
@@ -90,7 +100,6 @@ class _SettingsValuesState extends State<SettingsValues> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
           AppLocalizations.of(context)!.settings,
@@ -111,7 +120,8 @@ class _SettingsValuesState extends State<SettingsValues> {
               inactiveThumbColor: PomodoroValues.mainColor,
               onChanged: (bool newValue) async {
                 if (newValue == true) {
-                  await _requestPermissions().then((bool? notificationEnabled) {
+                  await _requestPermissions()
+                      .then((bool? notificationEnabled) {
                     if (notificationEnabled == null || !notificationEnabled) {
                       showEnableNotificationsInSettingsDialog();
                     } else {
@@ -213,7 +223,7 @@ class _SettingsValuesState extends State<SettingsValues> {
           ],
         ),
         const Spacer(
-          flex: 5,
+          flex: 2,
         ),
         MaterialButton(
           height: 50,
@@ -228,9 +238,7 @@ class _SettingsValuesState extends State<SettingsValues> {
             style: PomodoroValues.customTextTheme.subtitle2,
           ),
         ),
-        const Spacer(
-          flex: 5,
-        )
+        const Spacer()
       ],
     );
   }
