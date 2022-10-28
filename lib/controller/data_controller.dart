@@ -5,7 +5,15 @@ import 'package:pomodoro_app/services/logger_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DatabaseController with LoggerService {
+
+  factory DatabaseController() {
+    return _databaseController;
+  }
+
+  DatabaseController._internal();
   Isar? isarInstance;
+
+  static final DatabaseController _databaseController = DatabaseController._internal();
 
   Future<void> instanciateDatabase() async {
     isarInstance = await Isar.open([SessionSchema]);
@@ -32,6 +40,18 @@ class DatabaseController with LoggerService {
 
   Future<Session?> getSessionById(int id) async {
     return await isarInstance?.sessions.get(id);
+  }
+
+  Future<List<Session>?> getSessionsForLastAmountOfDays(int days) async {
+    return await isarInstance?.sessions
+        .filter()
+        .dateTimeGreaterThan(DateTime.now().subtract(Duration(days: days)))
+        .sortByDateTime()
+        .findAll();
+  }
+
+  Future<int?> getNumberOfSessionsInDB() async {
+    return await isarInstance?.sessions.count();
   }
 
   Future<List<Session>?> getTodaysSessions() async {

@@ -39,7 +39,7 @@ class EnableNotificationsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DatabaseController databaseController = DatabaseController();
+    final DatabaseController databaseController = DatabaseController();
     return Scaffold(
         appBar: AppBar(
           backgroundColor: PomodoroValues.cardColor,
