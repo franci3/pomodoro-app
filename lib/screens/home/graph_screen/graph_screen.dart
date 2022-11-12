@@ -1,7 +1,9 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
 import 'package:pomodoro_app/controller/graph_controller.dart';
 import 'package:pomodoro_app/widgets/circles_painter_widget.dart';
+import 'package:pomodoro_app/widgets/simple_bar_chart.dart';
 
 class GraphScreen extends StatefulWidget {
   const GraphScreen({Key? key}) : super(key: key);
@@ -13,6 +15,7 @@ class GraphScreen extends StatefulWidget {
 class _GraphScreenState extends State<GraphScreen> {
   final GraphController graphController = GraphController();
   late Future<List<FocusTimeGraphValue>> getFocusTimeGraphValue;
+
   @override
   void initState() {
     getFocusTimeGraphValue = graphController.getDataForLastAmountOfDays(20);
@@ -57,16 +60,20 @@ class _GraphScreenState extends State<GraphScreen> {
                       future: getFocusTimeGraphValue,
                       builder: (BuildContext context,
                           AsyncSnapshot<List<FocusTimeGraphValue>> snapshot) {
-                        if(snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           return const CircularProgressIndicator();
                         } else {
-                          return Text(
-                            snapshot.data!.toString()
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 26.0, vertical: 30),
+                            child: SimpleBarChart(
+                                data: snapshot.data!),
                           );
                         }
                       }),
                 ),
-              )
+              ),
+              const Expanded(child: Text('other widget'))
             ],
           )
         ],

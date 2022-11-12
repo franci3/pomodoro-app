@@ -81,4 +81,9 @@ class FocusTimeGraphValue {
 
   int? focusTime;
   DateTime? dateTime;
+
+  @override
+  String toString() {
+    return '{ focusTime: $focusTime, dateTime: $dateTime}';
+  }
 }
