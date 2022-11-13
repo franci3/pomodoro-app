@@ -18,5 +18,8 @@
     "notificationResumeTitle": "Lets focus!",
     "notificationResumeBody": "Lets get back to work. You are at round ",
     "enableNotificationsTitle": "Let us notify you!",
-    "enableNotificationsDescription": "To get notified when you successfully focused for a period of time, please enable notifications."
+    "enableNotificationsDescription": "To get notified when you successfully focused for a period of time, please enable notifications.",
+    "comingSoon": "Coming Soon",
+    "graphTitle": "Your daily focus time for the past 30 days in minutes",
+    "noDataAvailable": "No data available"
 }

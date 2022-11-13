@@ -24,31 +24,35 @@ class SimpleBarChart extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(15),
       ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Text(
-              'Deine tägliche Fokuszeit der letzen 30 Tage in Minuten',
-              style: PomodoroValues.customTextTheme.bodyText2,
-            ),
-            SizedBox(
-              height: 150,
-              child: BarChart(
-                BarChartData(
-                  barTouchData: barTouchData,
-                  titlesData: titlesData,
-                  borderData: borderData,
-                  barGroups: barGroups,
-                  gridData: FlGridData(show: false),
-                  alignment: BarChartAlignment.spaceEvenly,
-                ),
+      child: data.isNotEmpty
+          ? Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.graphTitle,
+                    style: PomodoroValues.customTextTheme.bodyText2,
+                  ),
+                  SizedBox(
+                    height: 150,
+                    child: BarChart(
+                      BarChartData(
+                        barTouchData: barTouchData,
+                        titlesData: titlesData,
+                        borderData: borderData,
+                        barGroups: barGroups,
+                        gridData: FlGridData(show: false),
+                        alignment: BarChartAlignment.spaceEvenly,
+                      ),
+                    ),
+                  ),
+                ],
               ),
+            )
+          : Center(
+              child: Text(AppLocalizations.of(context)!.noDataAvailable),
             ),
-          ],
-        ),
-      ),
     );
   }
 

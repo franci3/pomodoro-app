@@ -1,5 +1,5 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pomodoro_app/assets/custom_theme.dart';
 import 'package:pomodoro_app/controller/graph_controller.dart';
 import 'package:pomodoro_app/widgets/circles_painter_widget.dart';
@@ -65,15 +65,19 @@ class _GraphScreenState extends State<GraphScreen> {
                           return const CircularProgressIndicator();
                         } else {
                           return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 26.0, vertical: 30),
-                            child: SimpleBarChart(
-                                data: snapshot.data!),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 26.0, vertical: 30),
+                            child: SimpleBarChart(data: snapshot.data!),
                           );
                         }
                       }),
                 ),
               ),
-              const Expanded(child: Text('other widget'))
+              Expanded(
+                child: Center(
+                  child: Text(AppLocalizations.of(context)!.comingSoon),
+                ),
+              ),
             ],
           )
         ],

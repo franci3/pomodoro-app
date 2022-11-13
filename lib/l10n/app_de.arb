@@ -18,5 +18,8 @@
     "notificationResumeTitle": "Weiter gehts!",
     "notificationResumeBody": "Zeit zum fokussieren. Du bist bei Runde ",
     "enableNotificationsTitle": "Benachrichtigungen",
-    "enableNotificationsDescription": "Damit wir dich benachrichtigen können sobald du eine Focus Session abgeschlossen hast, aktiviere bitte die Benachrichtigungen."
+    "enableNotificationsDescription": "Damit wir dich benachrichtigen können sobald du eine Focus Session abgeschlossen hast, aktiviere bitte die Benachrichtigungen.",
+    "comingSoon": "Daran wird gerade gearbeitet",
+    "graphTitle": "Deine tägliche Fokuszeit der letzen 30 Tage in Minuten",
+    "noDataAvailable": "Keine Daten vorhanden"
 }
